@@ -21,6 +21,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "HiberApp"
 include(":app")
-include(":Core")
-include(":Data-retrofit")
-include(":Domain")
