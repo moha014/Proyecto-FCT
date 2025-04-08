@@ -12,21 +12,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HiberApp"
         tools:targetApi="31">
+
         <activity
             android:name=".SmartSolarActivity"
             android:exported="false" />
+
         <activity
             android:name=".factura.FacturasActivity"
-            android:exported="false" />
+            android:exported="true" /> <!-- 👈 Aquí está el cambio -->
+
         <activity
             android:name=".menu.MenuActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>
