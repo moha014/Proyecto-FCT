@@ -1,47 +1,56 @@
 package com.example.hiberapp.factura
 
-class FacturasProvider {
+class FacturaProvider {
     companion object{
-        val facturasList = listOf<Facturas>(
-            Facturas(
+        val facturasList = listOf<Factura>(
+            Factura(
                 "31 Ago 2020",
                 "Pendiente de pago",
-                "54,56€"),
+                "54,56€",
 
-            Facturas(
+            ),
+
+            Factura(
                 "31 Jul 2020",
                 "Pendiente de pago",
-                "54,56€"
+                "54,56€",
+
             ),
-            Facturas(
+            Factura(
                 "31 Ago 2020",
                 "Pendiente de pago",
-                "67,54€"
+                "67,54€",
+
             ),
-            Facturas(
+            Factura(
                 "22 Jun 2020",
                 "Pendiente de pago",
-                "56,38€"
+                "56,38€",
+
             ),
-            Facturas(
+            Factura(
                 "31 May 2020",
                 "",
-                "57,38€"
+                "57,38€",
+
             ),
-            Facturas(
+            Factura(
                 "22 Abr 2020",
                 "",
-                "65,23€"
+                "65,23€",
+
             ),
-            Facturas(
+            Factura(
                 "20 Mar 2020",
                 "",
-                "74,54€"
+                "74,54€",
+
             ),
-            Facturas(
+            Factura(
                 "22 Feb 2020",
                 "",
-                "67,64€"
+                "67,64€",
+
             )
         )
     }

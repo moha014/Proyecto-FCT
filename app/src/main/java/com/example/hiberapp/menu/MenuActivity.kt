@@ -3,9 +3,9 @@ package com.example.hiberapp.menu
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.hiberapp.factura.FacturasActivity
 import com.example.hiberapp.SmartSolarActivity
 import com.example.hiberapp.databinding.ActivityMenuBinding
+import com.example.hiberapp.ui.factura.FacturaFragment
 
 class MenuActivity : AppCompatActivity() {
 
@@ -23,9 +23,10 @@ class MenuActivity : AppCompatActivity() {
 
         // Configurar la acción de los botones
         binding.btnFacturas.setOnClickListener {
-            // Aquí debes agregar la acción para navegar a la pantalla de Facturas
-            val intent = Intent(this, FacturasActivity::class.java)
-            startActivity(intent)
+            supportFragmentManager.beginTransaction()
+                .replace(android.R.id.content, FacturaFragment())
+                .addToBackStack(null)
+                .commit()
         }
 
         binding.btnSmartSolar.setOnClickListener {
