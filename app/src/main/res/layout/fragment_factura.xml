@@ -15,7 +15,6 @@
         android:theme="@style/ThemeOverlay.AppCompat.Light"
         app:titleTextColor="@color/black"
         app:contentInsetStartWithNavigation="0dp"
-        app:navigationIcon="@drawable/ic_arrow_back"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -24,14 +23,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <ImageView
+                android:id="@+id/backArrow"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_arrow_back"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:tint="#8BC34A"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Consumo"
                 android:textColor="#8BC34A"
-                android:layout_marginLeft="18dp"
                 android:textSize="16sp"
-                android:layout_alignParentStart="true"
+                android:layout_toEndOf="@id/backArrow"
+                android:layout_marginStart="4dp"
                 android:layout_centerVertical="true"/>
 
             <ImageView
