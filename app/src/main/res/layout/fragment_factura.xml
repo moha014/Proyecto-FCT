@@ -9,14 +9,39 @@
     <Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:id="@+id/toolbar"
-        android:background="#E0D4D4"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:background="#FFFFFF"
+        android:theme="@style/ThemeOverlay.AppCompat.Light"
         app:titleTextColor="@color/black"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:contentInsetStartWithNavigation="0dp"
+        app:navigationIcon="@drawable/ic_arrow_back"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Consumo"
+                android:textColor="#8BC34A"
+                android:layout_marginLeft="18dp"
+                android:textSize="16sp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"/>
+
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="25dp"
+                android:src="@drawable/filtericon_3x" />
+        </RelativeLayout>
+    </Toolbar>
 
     <TextView
         android:id="@+id/tvFacturas"
@@ -25,7 +50,7 @@
         android:layout_margin="15dp"
         android:paddingBottom="20dp"
         android:text="Facturas"
-        android:textSize="26sp"
+        android:textSize="30sp"
         android:textColor="@color/black"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
