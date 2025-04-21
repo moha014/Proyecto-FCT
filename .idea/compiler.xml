@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="HiberApp.Core" target="21" />
+      <module name="HiberApp.Data-retrofit" target="21" />
+      <module name="HiberApp.Domain" target="11" />
+      <module name="HiberApp.Domain.main" target="11" />
+      <module name="HiberApp.Domain.test" target="11" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
