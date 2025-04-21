@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/logo1"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="16dp">
@@ -12,32 +13,30 @@
         android:id="@+id/imagenBienvenida"
         android:layout_width="300dp"
         android:layout_height="166dp"
-        android:layout_marginBottom="30dp"
-        android:contentDescription="Imagen de bienvenida"
+        android:layout_marginBottom="150dp"
         android:src="@drawable/iberdrolalogo" />
 
-    <!-- Botones debajo de la imagen -->
+    <!-- Botones con las opciones -->
     <Button
         android:id="@+id/btnFacturas"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="30dp"
-        android:shadowColor="@android:color/background_dark"
-        android:text="Facturas"
         android:padding="13dp"
-        app:cornerRadius="10dp"
+        android:text="Facturas"
         android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:cornerRadius="10dp" />
 
     <Button
         android:id="@+id/btnSmartSolar"
-        android:padding="13dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="30dp"
+        android:padding="13dp"
         android:text="Smart Solar"
-        app:cornerRadius="10dp"
         android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:cornerRadius="10dp" />
 
 </LinearLayout>

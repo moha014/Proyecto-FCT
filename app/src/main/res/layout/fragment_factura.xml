@@ -33,6 +33,7 @@
                 android:tint="#8BC34A"/>
 
             <TextView
+                android:id="@+id/consumoBack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Consumo"

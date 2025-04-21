@@ -1,11 +1,15 @@
 package com.example.hiberapp.smartSolar.Fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.hiberapp.R
+import org.json.JSONException
+import org.json.JSONObject
+import kotlin.collections.iterator
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -28,8 +32,24 @@ class DetallesFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
     }
 
+    fun displayJsonData(jsonString: String) {
+        try {
+            val jsonObject = JSONObject(jsonString)
+
+            for (key in jsonObject.keys()) {
+                val value = jsonObject.get(key)
+                // Aquí puedes hacer algo con cada clave y su valor
+                // Por ejemplo, imprimirlos en la consola
+                Log.v("DEBUG", "$key: $value")
+            }
+
+        } catch (e: JSONException) {
+            e.printStackTrace()
+        }
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
