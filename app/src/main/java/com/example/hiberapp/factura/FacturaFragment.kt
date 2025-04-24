@@ -33,38 +33,66 @@ class FacturaFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentFacturaBinding.inflate(inflater, container, false)
-
-        binding.toolbar.setTitle("Facturas")
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Configurar el título
+        binding.tvFacturas.text = "Facturas"
+
+        // Configurar el RecyclerView
+        setupRecyclerView()
+
+        // Configurar navegación hacia atrás
+        setupBackNavigation()
+
+        // Configurar botón de filtro
+        setupFilterButton()
+    }
+
+    private fun setupRecyclerView() {
         val adapter = FacturaAdapter(mockFacturas) { factura ->
             AlertDialog.Builder(requireContext())
                 .setTitle("Información")
                 .setMessage("Esta funcionalidad aún no está disponible")
                 .setPositiveButton("Cerrar", null)
                 .show()
-
-            val backArrow: ImageView = requireActivity().findViewById(R.id.backArrow)
-            val consumoBack: TextView = requireActivity().findViewById(R.id.consumoBack)
-
-            val goBack = View.OnClickListener {
-                requireActivity().onBackPressedDispatcher.onBackPressed()
-            }
-
-            backArrow.setOnClickListener(goBack)
-            consumoBack.setOnClickListener(goBack)
         }
 
         binding.recyclerFacturas.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerFacturas.adapter = adapter
     }
 
+    private fun setupBackNavigation() {
+        val backArrow: ImageView = binding.toolbar.findViewById(R.id.backArrow)
+        val consumoBack: TextView = binding.toolbar.findViewById(R.id.consumoBack)
+
+        val goBack = View.OnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+
+        backArrow.setOnClickListener(goBack)
+        consumoBack.setOnClickListener(goBack)
+    }
+
+    private fun setupFilterButton() {
+        val filterIcon: ImageView = binding.toolbar.findViewById(R.id.ivFilter)
+        filterIcon.setOnClickListener {
+            // Usar el ID de contenedor de la actividad principal
+            val mainActivity = requireActivity()
+            val containerId = android.R.id.content  // Este es el ID del contenedor principal de cualquier actividad
+
+            mainActivity.supportFragmentManager.beginTransaction()
+                .add(containerId, FiltrarFacturasFragment.newInstance())
+                .addToBackStack(null)
+                .commit()
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
-
 }

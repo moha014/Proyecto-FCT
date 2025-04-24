@@ -23,8 +23,8 @@
         android:id="@+id/tvAutoconsumo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="AUTOCONSUMO:"
+        android:layout_marginTop="50dp"
+        android:text="Autoconsumo:"
         android:textSize="14sp"
         android:textColor="#757575"
         app:layout_constraintTop_toBottomOf="@+id/tvInfoInstalacion"
@@ -37,8 +37,8 @@
         android:layout_marginStart="8dp"
         android:text="92%"
         android:textSize="14sp"
-        android:textColor="#8BC34A"
         android:textStyle="bold"
+        android:textColor="@color/black"
         app:layout_constraintTop_toTopOf="@+id/tvAutoconsumo"
         app:layout_constraintStart_toEndOf="@+id/tvAutoconsumo"
         app:layout_constraintBottom_toBottomOf="@+id/tvAutoconsumo" />
@@ -46,12 +46,15 @@
     <ImageView
         android:id="@+id/ivCircularGraph"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="400dp"
         android:layout_marginTop="16dp"
+        android:gravity="center"
         android:scaleType="fitCenter"
         android:src="@drawable/instalacion1"
-        app:layout_constraintTop_toBottomOf="@+id/tvAutoconsumo"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvAutoconsumo"
+        app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

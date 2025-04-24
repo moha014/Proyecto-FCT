@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Título CAU -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="CAU (Código Autoconsumo)"
+        android:textSize="12sp"
+        android:textColor="#757575" />
+
+    <TextView
+        android:id="@+id/tv_cau"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ES0021000000001994LJ1FA000"
+        android:textSize="17sp"
+        android:textColor="#000000" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#E0E0E0"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="12dp"/>
+
+    <!-- Estado solicitud -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Estado solicitud alta autoconsumo"
+        android:textSize="12sp"
+        android:textColor="#757575"
+        android:layout_marginTop="16dp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_estado_solicitud"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="No hemos recibido ninguna solicitud de autoconsumo"
+            android:textColor="#000000"
+            android:textSize="17sp" />
+
+        <ImageView
+            android:id="@+id/icono_info"
+            android:layout_width="35dp"
+            android:layout_height="25dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/info_boton" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#E0E0E0"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="12dp"/>
+
+    <!-- Tipo autoconsumo -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tipo autoconsumo"
+        android:textSize="12sp"
+        android:textColor="#757575"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/tv_tipo_autoconsumo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Con excedentes y compensación Individual - Consumo"
+        android:textSize="17sp"
+        android:textColor="#000000" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#E0E0E0"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="12dp"/>
+
+    <!-- Compensación de excedentes -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Compensación de excedentes"
+        android:textSize="12sp"
+        android:textColor="#757575"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/tv_compensacion_excedentes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Precio PVPC"
+        android:textSize="17sp"
+        android:textColor="#000000" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#E0E0E0"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="12dp"/>
+
+    <!-- Potencia de instalación -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Potencia de instalación"
+        android:textSize="12sp"
+        android:textColor="#757575"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/tv_potencia_instalacion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="5kWp"
+        android:textSize="17sp"
+        android:textColor="#000000" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#E0E0E0"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="12dp"/>
+
+</LinearLayout>

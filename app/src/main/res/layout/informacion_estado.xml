@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="250dp"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:background="@android:color/white"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Estado solicitud autoconsumo"
+        android:textSize="18sp"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="El tiempo estimado de activación de tu autoconsumo es de 1 a 2 meses, éste variará en función de tu comunidad autónoma y distribuidora"
+        android:textSize="14sp"
+        android:textColor="#333333"
+        android:gravity="center"
+        android:layout_marginBottom="24dp"/>
+
+    <Button
+        android:id="@+id/btn_aceptar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Aceptar"
+        android:textSize="16sp"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#8BC34A"
+        android:padding="12dp"/>
+
+</LinearLayout>

@@ -12,6 +12,7 @@
     <ImageView
         android:id="@+id/imagenBienvenida"
         android:layout_width="300dp"
+        android:background="#A1A898"
         android:layout_height="166dp"
         android:layout_marginBottom="150dp"
         android:src="@drawable/iberdrolalogo" />
@@ -21,6 +22,7 @@
         android:id="@+id/btnFacturas"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:backgroundTint="@android:color/holo_green_light"
         android:layout_margin="30dp"
         android:padding="13dp"
         android:text="Facturas"
@@ -32,11 +34,13 @@
         android:id="@+id/btnSmartSolar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:backgroundTint="@android:color/holo_green_light"
         android:layout_margin="30dp"
         android:padding="13dp"
         android:text="Smart Solar"
         android:textSize="18sp"
         android:textStyle="bold"
         app:cornerRadius="10dp" />
+
 
 </LinearLayout>

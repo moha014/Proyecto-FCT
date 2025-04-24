@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.example.hiberapp.smartSolar.Fragments.DetallesFragment
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import org.json.JSONException
@@ -55,7 +56,7 @@ class SmartSolarActivity : AppCompatActivity() {
         // Conectar TabLayout con ViewPager2
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             when (position) {
-                0 -> tab.text = "Mi Instalación"
+                0 -> tab.text = getString(R.string.mi_instalaci_n)
                 1 -> tab.text = "Energía"
                 2 -> tab.text = "Detalles"
             }
@@ -72,8 +73,8 @@ class SmartSolarActivity : AppCompatActivity() {
             }
         """.trimIndent()
 
-        val detallesFragment = supportFragmentManager.findFragmentById(R.id.viewPager) as? DetallesFragment
-        detallesFragment?.displayJsonData(jsonData)
+        val DetallesFragment = supportFragmentManager.findFragmentById(R.id.viewPager) as? DetallesFragment
+        DetallesFragment?.displayJsonData(jsonData)
     }
 
     // Adaptador para el ViewPager2
@@ -81,14 +82,31 @@ class SmartSolarActivity : AppCompatActivity() {
         override fun getItemCount(): Int = 3
 
         override fun createFragment(position: Int): Fragment {
+            val jsonData = """
+            {
+                "CAU(Código Autoconsumo)": "ES0021000000001994LJ1FA000",
+                "Estado solicitud alta autoconsumidor": "No hemos recibido ninguna solicitud de autoconsumo",
+                "Tipo autoconsumo": "Con excedentes y compensación individual - Consumo",
+                "Compensación de excedentes": "Precio PVPC",
+                "Potencia de instalación": "5kWp"
+            }
+        """.trimIndent()
+
             return when (position) {
                 0 -> MiInstalacionFragment()
                 1 -> EnergiaFragment()
-                2 -> DetallesFragment()
+                2 -> {
+                    val fragment = DetallesFragment()
+                    val bundle = Bundle()
+                    bundle.putString("jsonData", jsonData)
+                    fragment.arguments = bundle
+                    fragment
+                }
                 else -> MiInstalacionFragment()
             }
         }
     }
+
 }
 
 // Fragmento para Mi Instalación
@@ -107,32 +125,5 @@ class EnergiaFragment : Fragment() {
     }
 }
 
-// Fragmento para Detalles
-class DetallesFragment : Fragment() {
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_detalles, container, false)
-        return view
-    }
-
-    fun displayJsonData(jsonString: String) {
-        try {
-            val jsonObject = JSONObject(jsonString)
-
-            jsonObject
-            // Aquí puedes acceder a los datos del JSON y mostrarlos en los elementos del layout
-            // Por ejemplo:
-            val cau = jsonObject.getString("CAU(Código Autoconsumo)")
-            val estadoSolicitud = jsonObject.getString("Estado solicitud alta autoconsumidor")
-            val tipoAutoconsumo = jsonObject.getString("Tipo autoconsumo")
-            val compensacionExcedentes = jsonObject.getString("Compensación de excedentes")
-            val potenciaInstalacion = jsonObject.getString("Potencia de instalación")
-            // Puedes crear variables para cada uno de los datos y luego asignarlos a los TextViews
-            // y así sucesivamente
-            // Actualiza los TextViews o cualquier otro elemento de la vista con los datos del JSON
 
 
-        } catch (e: JSONException) {
-            e.printStackTrace()
-        }
-    }
-}

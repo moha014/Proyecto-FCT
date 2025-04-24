@@ -1,80 +1,99 @@
 package com.example.hiberapp.smartSolar.Fragments
 
+import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
+import android.view.*
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import com.example.hiberapp.R
 import org.json.JSONException
 import org.json.JSONObject
-import kotlin.collections.iterator
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [DetallesFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class DetallesFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        Log.d("DetallesFragment", "onCreateView: inflando el layout...")
+        return inflater.inflate(R.layout.fragment_detalless, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        Log.d("DetallesFragment", "onViewCreated: Fragment ya visible")
+
+        // Manejamos el click del icono de información
+        val infoIcon = view.findViewById<ImageView>(R.id.icono_info)
+        if (infoIcon == null) {
+            Log.e("DetallesFragment", "icono_info NO encontrado. Revisa que el layout sea el correcto.")
+            Toast.makeText(context, "icono_info no encontrado", Toast.LENGTH_LONG).show()
+        } else {
+            Log.d("DetallesFragment", "icono_info encontrado correctamente")
+            infoIcon.setOnClickListener { view ->
+                Toast.makeText(context, "Icono clickeado", Toast.LENGTH_SHORT).show()
+                mostrarDialogoInfo()
+            }
         }
 
+        // Recuperar y mostrar los datos del JSON
+        val jsonData = arguments?.getString("jsonData")
+        if (jsonData != null) {
+            Log.d("DetallesFragment", "Recibido JSON: $jsonData")
+            displayJsonData(jsonData)
+        } else {
+            Log.e("DetallesFragment", "No se recibió ningún JSON por Bundle.")
+        }
+    }
+
+    private fun mostrarDialogoInfo() {
+        Log.d("DetallesFragment", "mostrarDialogoInfo: Mostrando diálogo")
+
+        val dialog = Dialog(requireContext())
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.informacion_estado)
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+        val btnAceptar = dialog.findViewById<Button>(R.id.btn_aceptar)
+        if (btnAceptar == null) {
+            Log.e("DetallesFragment", "Botón aceptar no encontrado en el diálogo.")
+        } else {
+            Log.d("DetallesFragment", "Botón aceptar encontrado")
+            btnAceptar.setOnClickListener {
+                Toast.makeText(context, "Botón clickeado", Toast.LENGTH_SHORT).show()
+                dialog.dismiss()
+            }
+        }
+
+        dialog.show()
     }
 
     fun displayJsonData(jsonString: String) {
         try {
             val jsonObject = JSONObject(jsonString)
 
-            for (key in jsonObject.keys()) {
-                val value = jsonObject.get(key)
-                // Aquí puedes hacer algo con cada clave y su valor
-                // Por ejemplo, imprimirlos en la consola
-                Log.v("DEBUG", "$key: $value")
-            }
+            val cau = jsonObject.getString("CAU(Código Autoconsumo)")
+            val estadoSolicitud = jsonObject.getString("Estado solicitud alta autoconsumidor")
+            val tipoAutoconsumo = jsonObject.getString("Tipo autoconsumo")
+            val compensacionExcedentes = jsonObject.getString("Compensación de excedentes")
+            val potenciaInstalacion = jsonObject.getString("Potencia de instalación")
+
+            Log.d("DetallesFragment", "Mostrando datos en la UI")
+
+            view?.findViewById<TextView>(R.id.tv_cau)?.text = cau
+            view?.findViewById<TextView>(R.id.tv_estado_solicitud)?.text = estadoSolicitud
+            view?.findViewById<TextView>(R.id.tv_tipo_autoconsumo)?.text = tipoAutoconsumo
+            view?.findViewById<TextView>(R.id.tv_compensacion_excedentes)?.text = compensacionExcedentes
+            view?.findViewById<TextView>(R.id.tv_potencia_instalacion)?.text = potenciaInstalacion
 
         } catch (e: JSONException) {
+            Log.e("DetallesFragment", "Error al parsear JSON: ${e.message}")
             e.printStackTrace()
         }
-    }
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_detalles, container, false)
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment DetallesFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            DetallesFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
     }
 }
