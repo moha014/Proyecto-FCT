@@ -20,11 +20,8 @@ class FiltrarFacturasFragment : Fragment() {
     private lateinit var tvMinSeleccionado: TextView
     private lateinit var tvMaxSeleccionado: TextView
 
-    private lateinit var imageView: ImageView
-
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_filtrar_facturas, container, false)
@@ -33,46 +30,45 @@ class FiltrarFacturasFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Inicializar vistas
+        // Referenciamos los elementos de la interfaz(FiltrarFacturasFragment)
         etFechaInicio = view.findViewById(R.id.etFechaInicio)
         etFechaFinal = view.findViewById(R.id.etFechaFinal)
         rangeSlider = view.findViewById(R.id.rangeSlider)
         tvMinSeleccionado = view.findViewById(R.id.tvMinSeleccionado)
         tvMaxSeleccionado = view.findViewById(R.id.tvMaxSeleccionado)
 
-
-        // Configurar calendarios
+        // Configuración de la seleccion de las fechas
         setupDatePickers()
-
-        // Configurar slider
+        // Configuración de la selección del importe de precio-precio(Slider)
         setupRangeSlider()
 
-        // Hacer clic en la imagen de cierre
+        // Botón para cerrar el fragment
         view.findViewById<ImageView>(R.id.ivCerrar).setOnClickListener {
-            // Cerrar este fragmento y volver al anterior en la pila
             requireActivity().supportFragmentManager.popBackStack()
         }
 
-        // Manejar clics de botones
+        // Botón para aplicar lod filtros seleccionados
         view.findViewById<Button>(R.id.btnAplicar).setOnClickListener {
             aplicarFiltros()
         }
 
+        // Botón para borrar los filtros seleccionador
         view.findViewById<Button>(R.id.btnEliminarFiltros).setOnClickListener {
             limpiarFiltros()
         }
     }
 
+    // Muestra un calendario desplegable (DatePickerDialog) al clicar en los campos "Fecha"
     private fun setupDatePickers() {
         val calendar = Calendar.getInstance()
-        val dateFormatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 
-        etFechaInicio.setOnClickListener {
+        val showDateDialog: (EditText) -> Unit = { editText ->
             DatePickerDialog(
                 requireContext(),
-                { _, year, month, dayOfMonth ->
-                    calendar.set(year, month, dayOfMonth)
-                    etFechaInicio.setText(dateFormatter.format(calendar.time))
+                { _, year, month, day ->
+                    calendar.set(year, month, day)
+                    editText.setText(formatter.format(calendar.time))
                 },
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
@@ -80,52 +76,39 @@ class FiltrarFacturasFragment : Fragment() {
             ).show()
         }
 
-        etFechaFinal.setOnClickListener {
-            DatePickerDialog(
-                requireContext(),
-                { _, year, month, dayOfMonth ->
-                    calendar.set(year, month, dayOfMonth)
-                    etFechaFinal.setText(dateFormatter.format(calendar.time))
-                },
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH)
-            ).show()
-        }
+        etFechaInicio.setOnClickListener { showDateDialog(etFechaInicio) }
+        etFechaFinal.setOnClickListener { showDateDialog(etFechaFinal) }
     }
 
+    // Configuracion del Slider para seleccionar un rango de precios
     private fun setupRangeSlider() {
-        // Establecer valores iniciales
         rangeSlider.setValues(5f, 250f)
-
-        // Listener para actualizar los textos cuando el slider cambia
         rangeSlider.addOnChangeListener { slider, _, _ ->
-            val values = slider.values
-            tvMinSeleccionado.text = "${values[0].toInt()} €"
-            tvMaxSeleccionado.text = "${values[1].toInt()} €"
+            val valores = slider.values
+            tvMinSeleccionado.text = "${valores[0].toInt()} €"
+            tvMaxSeleccionado.text = "${valores[1].toInt()} €"
         }
     }
 
+    // Aplicacion de los filtros y cierre del fragment
     private fun aplicarFiltros() {
-        // Implementa la lógica para aplicar los filtros
-        Toast.makeText(requireContext(), "Filtros aplicados", Toast.LENGTH_SHORT).show()
-        // Cierra el fragmento al aplicar filtros
         requireActivity().supportFragmentManager.popBackStack()
     }
 
+    // Restablecimiento de todos los campos del filtro a su estado inicial
     private fun limpiarFiltros() {
         etFechaInicio.setText("")
         etFechaFinal.setText("")
-        rangeSlider.setValues(1f, 300f) // Resetear a valores iniciales
+        rangeSlider.setValues(1f, 300f)
 
-        // Limpiar checkboxes
-        view?.findViewById<CheckBox>(R.id.cbPagado)?.isChecked = false
-        view?.findViewById<CheckBox>(R.id.cbAnuladas)?.isChecked = false
-        view?.findViewById<CheckBox>(R.id.cbCuotaFija)?.isChecked = false
-        view?.findViewById<CheckBox>(R.id.cbPendiente)?.isChecked = false
-        view?.findViewById<CheckBox>(R.id.cbPlanPago)?.isChecked = false
+        val checkBoxIds = listOf(
+            R.id.cbPagado, R.id.cbAnuladas, R.id.cbCuotaFija,
+            R.id.cbPendiente, R.id.cbPlanPago
+        )
 
-        Toast.makeText(requireContext(), "Filtros eliminados", Toast.LENGTH_SHORT).show()
+        checkBoxIds.forEach {
+            view?.findViewById<CheckBox>(it)?.isChecked = false
+        }
     }
 
     companion object {

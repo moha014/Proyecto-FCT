@@ -73,7 +73,8 @@ class SmartSolarActivity : AppCompatActivity() {
             }
         """.trimIndent()
 
-        val DetallesFragment = supportFragmentManager.findFragmentById(R.id.viewPager) as? DetallesFragment
+        val DetallesFragment =
+            supportFragmentManager.findFragmentById(R.id.viewPager) as? DetallesFragment
         DetallesFragment?.displayJsonData(jsonData)
     }
 
@@ -102,6 +103,7 @@ class SmartSolarActivity : AppCompatActivity() {
                     fragment.arguments = bundle
                     fragment
                 }
+
                 else -> MiInstalacionFragment()
             }
         }
@@ -111,7 +113,11 @@ class SmartSolarActivity : AppCompatActivity() {
 
 // Fragmento para Mi Instalación
 class MiInstalacionFragment : Fragment() {
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val view = inflater.inflate(R.layout.fragment_mi_instalacion, container, false)
         return view
     }
@@ -119,7 +125,11 @@ class MiInstalacionFragment : Fragment() {
 
 // Fragmento para Energía
 class EnergiaFragment : Fragment() {
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val view = inflater.inflate(R.layout.fragment_energia, container, false)
         return view
     }

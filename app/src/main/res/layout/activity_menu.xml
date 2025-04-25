@@ -6,41 +6,89 @@
     android:background="@drawable/logo1"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="15dp">
 
-    <!-- Imagen en el centro -->
-    <ImageView
-        android:id="@+id/imagenBienvenida"
-        android:layout_width="300dp"
-        android:background="#A1A898"
-        android:layout_height="166dp"
-        android:layout_marginBottom="150dp"
-        android:src="@drawable/iberdrolalogo" />
+    <!-- Toolbar simplificada solo con la X -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="550dp"
+        android:layout_height="250dp"
+        android:background="@drawable/iberdrolalogo"
+        android:gravity="center"
+        android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <!-- Botones con las opciones -->
-    <Button
-        android:id="@+id/btnFacturas"
-        android:layout_width="match_parent"
+    <!-- Textos encima de los botones -->
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@android:color/holo_green_light"
-        android:layout_margin="30dp"
-        android:padding="13dp"
-        android:text="Facturas"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:cornerRadius="10dp" />
+        android:gravity="center"
+        android:layout_marginTop="125dp"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/btnSmartSolar"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BIENVENIDO"
+            android:textSize="50sp"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="MOHAMMED"
+                android:textColor="@color/white"
+                android:textSize="35sp" />
+
+            <View
+                android:layout_width="250dp"
+                android:layout_height="2dp"
+                android:background="@android:color/darker_gray" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Contenedor para los botones centrados -->
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@android:color/holo_green_light"
-        android:layout_margin="30dp"
-        android:padding="13dp"
-        android:text="Smart Solar"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:cornerRadius="10dp" />
+        android:layout_height="270dp"
+        android:layout_marginTop="33dp">
 
+        <Button
+            android:id="@+id/btnFacturas"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="50dp"
+            android:backgroundTint="@android:color/holo_green_light"
+            android:padding="15dp"
+            android:text="📋Facturas"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:cornerRadius="18dp" />
+
+        <Button
+            android:id="@+id/btnSmartSolar"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btnFacturas"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="15dp"
+            android:backgroundTint="@android:color/holo_green_light"
+            android:padding="15dp"
+            android:text="☀️Smart Solar"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:cornerRadius="18dp" />
+
+    </RelativeLayout>
 
 </LinearLayout>

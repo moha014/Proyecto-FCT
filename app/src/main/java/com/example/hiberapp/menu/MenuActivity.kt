@@ -9,19 +9,16 @@ import com.example.hiberapp.ui.factura.FacturaFragment
 
 class MenuActivity : AppCompatActivity() {
 
-    // Se declara el objeto de ViewBinding
     private lateinit var binding: ActivityMenuBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Se inicializa el ViewBinding
+        // Uso del ViewBinding para acceder a los elementos del layout
         binding = ActivityMenuBinding.inflate(layoutInflater)
-
-        // Establecer el contenido de la actividad
         setContentView(binding.root)
 
-        // Configurar la acción de los botones
+        // Botón que abre el fragment de facturas dentro de esta misma activity
         binding.btnFacturas.setOnClickListener {
             supportFragmentManager.beginTransaction()
                 .replace(android.R.id.content, FacturaFragment())
@@ -29,8 +26,8 @@ class MenuActivity : AppCompatActivity() {
                 .commit()
         }
 
+        // Botón que inicia una activity diferente(SmartSolarActivity)
         binding.btnSmartSolar.setOnClickListener {
-            // Aquí debes agregar la acción para navegar a la pantalla de Smart Solar
             val intent = Intent(this, SmartSolarActivity::class.java)
             startActivity(intent)
         }
