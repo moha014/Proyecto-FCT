@@ -6,36 +6,43 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.hiberapp.databinding.ItemFacturaBinding
 import com.example.hiberapp.factura.Factura
 
-class FacturaAdapter(
-    private val facturas: List<Factura>,
-    private val onItemClick: (Factura) -> Unit
-) : RecyclerView.Adapter<FacturaAdapter.FacturaViewHolder>() {
+class FacturaAdapter(private val facturas: List<Factura>) : RecyclerView.Adapter<FacturaAdapter.ViewHolder>() {
 
-    inner class FacturaViewHolder(private val binding: ItemFacturaBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        fun bind(factura: Factura) {
-            binding.tvFecha.text = factura.fecha
-            binding.tvPrecio.text = factura.precio
-            binding.tvEstado.text = factura.estado ?: ""
+    private var onItemClickListener: ((Factura) -> Unit)? = null
 
-            binding.facturaItemRoot.setOnClickListener {
-                onItemClick(factura)
+    fun setOnItemClickListener(listener: (Factura) -> Unit) {
+        onItemClickListener = listener
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val binding = ItemFacturaBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(binding)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val factura = facturas[position]
+        holder.bind(factura)
+    }
+
+    override fun getItemCount(): Int = facturas.size
+
+    inner class ViewHolder(private val binding: ItemFacturaBinding) : RecyclerView.ViewHolder(binding.root) {
+
+        init {
+            binding.root.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    onItemClickListener?.invoke(facturas[position])
+                }
             }
         }
-    }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FacturaViewHolder {
-        val binding = ItemFacturaBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        )
-        return FacturaViewHolder(binding)
+        fun bind(facturas: Factura) {
+            binding.tvFacturaId.text = factura.id
+            binding.tvFacturaFecha.text = factura.fecha
+            binding.tvFacturaImporte.text = "${factura.importe} €"
+            binding.tvFacturaEstado.text = factura.estado
+            binding.tvFacturaDescripcion.text = factura.descripcion
+        }
     }
-
-    override fun onBindViewHolder(holder: FacturaViewHolder, position: Int) {
-        holder.bind(facturas[position])
-    }
-
-    override fun getItemCount() = facturas.size
 }

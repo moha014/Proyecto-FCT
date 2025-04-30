@@ -1,33 +1,28 @@
-package com.example.hiberapp.ui.factura
+package com.example.hiberapp.factura
 
 import android.app.AlertDialog
+import android.app.Fragment
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.hiberapp.R
 import com.example.hiberapp.databinding.FragmentFacturaBinding
-import com.example.hiberapp.factura.Factura
+import com.example.hiberapp.factura.viewmodel.FacturaViewModel
+import com.example.hiberapp.factura.databinding.FragmentFacturaBinding  // Asegúrate de que coincide con tu paquete
+import com.example.hiberapp.ui.factura.FacturaAdapter
 
 class FacturaFragment : Fragment() {
 
     private var _binding: FragmentFacturaBinding? = null
     private val binding get() = _binding!!
 
-    // Lista de facturas de ejemplo para mostrar en la pantalla
-    private val facturas = listOf(
-        Factura("31 Ago 2020", "Pendiente de pago", "54,56 €"),
-        Factura("31 Jul 2020", "Pendiente de pago", "67,54 €"),
-        Factura("22 Jun 2020", "Pendiente de pago", "56,38 €"),
-        Factura("31 May 2020", null, "57,38 €"),
-        Factura("22 Abr 2020", null, "65,23 €"),
-        Factura("20 Mar 2020", null, "74,54 €"),
-        Factura("22 Feb 2020", null, "67,64 €")
-    )
+    private lateinit var viewModel: FacturaViewModel
+    private lateinit var adapter: FacturaAdapter  // Tu adaptador existente
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,56 +35,71 @@ class FacturaFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.tvFacturas.text = "Facturas"
+        // Inicializar ViewModel
+        viewModel = ViewModelProvider(this)[FacturaViewModel::class.java]
 
-        // Inicialización del listado de facturas
+        // Configurar RecyclerView y adaptador
         setupRecyclerView()
-        // Configuración de los botones para volver atrás
-        setupBackNavigation()
-        // Preparacion del botón(imagen) de filtro
-        setupFilterButton()
+
+        // Observadores para los LiveData
+        setupObservers()
+
+        // Cargar datos
+        viewModel.loadFacturas()
+
+        // Configurar botón de filtro
+        binding.btnFiltrar.setOnClickListener {
+            // Aquí implementarías la navegación a la pantalla de filtros
+            // Por ejemplo:
+            // findNavController().navigate(R.id.action_facturaFragment_to_filtrarFacturasFragment)
+        }
     }
 
-    // Configuracion del RecyclerView con los datos y un popup al pulsar una factura
     private fun setupRecyclerView() {
-        val adapter = FacturaAdapter(facturas) {
+        adapter = FacturaAdapter(emptyList()) { factura ->
+            // Mostrar diálogo al hacer clic en una factura
             AlertDialog.Builder(requireContext())
                 .setTitle("Información")
                 .setMessage("Esta funcionalidad aún no está disponible")
-                .setPositiveButton("Cerrar", null)
+                .setPositiveButton("Cerrar") { dialog, _ -> dialog.dismiss() }
+                .create()
                 .show()
         }
 
-        binding.recyclerFacturas.layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerFacturas.adapter = adapter
-    }
-
-    // Configuración del botón de volver atrás
-    private fun setupBackNavigation() {
-        val backArrow = binding.toolbar.findViewById<ImageView>(R.id.backArrow)
-        val consumoBack = binding.toolbar.findViewById<TextView>(R.id.consumoBack)
-
-        val goBackListener = View.OnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
-        }
-
-        backArrow.setOnClickListener(goBackListener)
-        consumoBack.setOnClickListener(goBackListener)
-    }
-
-    // Abre FiltrarFacturasFragment de filtros al pulsar la imagen de filtros
-    private fun setupFilterButton() {
-        val filterIcon = binding.toolbar.findViewById<ImageView>(R.id.ivFilter)
-
-        filterIcon.setOnClickListener {
-            val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            transaction.add(android.R.id.content, FiltrarFacturasFragment.newInstance())
-                .addToBackStack(null)
-                .commit()
+        binding.recyclerView.apply {  // Asegúrate de que el ID coincide con tu layout
+            layoutManager = LinearLayoutManager(requireContext())
+            this.adapter = this@FacturaFragment.adapter
         }
     }
 
-    // Metodo para limpiar las elecciones de filtro
+    private fun setupObservers() {
+        // Observar cambios en la lista de facturas
+        viewModel.facturas.observe(viewLifecycleOwner) { facturas ->
+            adapter.updateFacturas(facturas)
+
+            // Mostrar mensaje si no hay facturas
+            if (facturas.isEmpty()) {
+                binding.tvNoFacturas.visibility = View.VISIBLE  // Asegúrate de que este ID existe
+                binding.recyclerView.visibility = View.GONE
+            } else {
+                binding.tvNoFacturas.visibility = View.GONE
+                binding.recyclerView.visibility = View.VISIBLE
+            }
+        }
+
+        // Observar estado de carga
+        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE  // Asegúrate de que este ID existe
+        }
+
+        // Observar errores
+        viewModel.error.observe(viewLifecycleOwner) { errorMsg ->
+            if (errorMsg.isNotEmpty()) {
+                Toast.makeText(requireContext(), errorMsg, Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

@@ -1,0 +1,25 @@
+{
+  "facturas": [
+    {
+      "id": "F001",
+      "fecha": "2023-01-15",
+      "importe": 125.75,
+      "estado": "pagado",
+      "descripcion": "Factura de electricidad enero"
+    },
+    {
+      "id": "F002",
+      "fecha": "2023-02-15",
+      "importe": 98.50,
+      "estado": "pendiente",
+      "descripcion": "Factura de electricidad febrero"
+    },
+    {
+      "id": "F003",
+      "fecha": "2023-03-15",
+      "importe": 145.30,
+      "estado": "pendiente",
+      "descripcion": "Factura de electricidad marzo"
+    }
+  ]
+}
