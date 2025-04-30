@@ -22,7 +22,7 @@ class FacturaFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var viewModel: FacturaViewModel
-    private lateinit var adapter: FacturaAdapter  // Tu adaptador existente
+    private lateinit var adapter: FacturaAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
