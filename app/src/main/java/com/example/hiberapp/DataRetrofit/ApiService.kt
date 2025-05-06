@@ -1,11 +1,10 @@
 package com.example.hiberapp.DataRetrofit
 
 import com.example.hiberapp.factura.FacturaResponse
-import okhttp3.Response
+import retrofit2.Call
 import retrofit2.http.GET
-import retrofit2.http.Url
 
-interface APIService {
+interface ApiService {
     @GET("facturas")
-    suspend fun getFactura(@Url url:String): FacturaResponse
+    fun obtenerFacturas(): Call<FacturaResponse>
 }

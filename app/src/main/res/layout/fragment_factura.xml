@@ -1,24 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@color/white"
-    android:paddingTop="20dp"
-    android:layout_height="match_parent">
+    android:paddingTop="20dp">
 
     <Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:id="@+id/toolbar"
         android:background="#FFFFFF"
         android:theme="@style/ThemeOverlay.AppCompat.Light"
-        app:titleTextColor="@color/black"
         app:contentInsetStartWithNavigation="0dp"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleTextColor="@color/black">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -28,21 +27,25 @@
                 android:id="@+id/backArrow"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_arrow_back"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/ic_arrow_back"
                 app:tint="#8BC34A" />
 
             <TextView
                 android:id="@+id/consumoBack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="4dp"
+                android:layout_toEndOf="@id/backArrow"
+                android:clickable="true"
+                android:focusable="true"
                 android:text="Consumo"
                 android:textColor="#8BC34A"
-                android:textSize="16sp"
-                android:layout_toEndOf="@id/backArrow"
-                android:layout_marginStart="4dp"
-                android:layout_centerVertical="true"/>
+                android:textSize="16sp" />
 
             <ImageView
                 android:id="@+id/ivFilter"
@@ -50,9 +53,9 @@
                 android:layout_height="35dp"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="25dp"
-                android:src="@drawable/filtericon_3x"
                 android:clickable="true"
-                android:focusable="true" />
+                android:focusable="true"
+                android:src="@drawable/filtericon_3x" />
 
         </RelativeLayout>
     </Toolbar>
@@ -64,8 +67,8 @@
         android:layout_margin="15dp"
         android:paddingBottom="20dp"
         android:text="Facturas"
-        android:textSize="30sp"
         android:textColor="@color/black"
+        android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
@@ -74,9 +77,9 @@
         android:id="@+id/recyclerFacturas"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@+id/tvFacturas"
+        android:padding="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:padding="8dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvFacturas" />
 </androidx.constraintlayout.widget.ConstraintLayout>

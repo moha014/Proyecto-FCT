@@ -15,8 +15,8 @@ class FacturaAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(factura: Factura) {
             binding.tvFecha.text = factura.fecha
-            binding.tvPrecio.text = factura.precio
-            binding.tvEstado.text = factura.estado ?: ""
+            binding.tvPrecio.text = String.format("%.2f €", factura.importeOrdenacion.toDouble())
+            binding.tvEstado.text = factura.descEstado ?: ""
 
             binding.facturaItemRoot.setOnClickListener {
                 onItemClick(factura)

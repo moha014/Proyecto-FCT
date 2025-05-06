@@ -11,7 +11,7 @@
     <!-- Toolbar simplificada solo con la X -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_width="550dp"
+        android:layout_width="390dp"
         android:layout_height="250dp"
         android:background="@drawable/iberdrolalogo"
         android:gravity="center"
@@ -25,49 +25,19 @@
         android:gravity="center"
         android:layout_marginTop="125dp"
         android:orientation="vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="BIENVENIDO"
-            android:textSize="50sp"
-            android:textColor="@color/white"
-            android:textStyle="bold" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="MOHAMMED"
-                android:textColor="@color/white"
-                android:textSize="35sp" />
-
-            <View
-                android:layout_width="250dp"
-                android:layout_height="2dp"
-                android:background="@android:color/darker_gray" />
-
-        </LinearLayout>
-
     </LinearLayout>
 
     <!-- Contenedor para los botones centrados -->
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="270dp"
-        android:layout_marginTop="33dp">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp">
 
         <Button
             android:id="@+id/btnFacturas"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_margin="50dp"
             android:backgroundTint="@android:color/holo_green_light"
             android:padding="15dp"
             android:text="📋Facturas"
@@ -81,10 +51,25 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/btnFacturas"
             android:layout_centerHorizontal="true"
-            android:layout_margin="15dp"
+            android:layout_margin="20dp"
             android:backgroundTint="@android:color/holo_green_light"
             android:padding="15dp"
             android:text="☀️Smart Solar"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:cornerRadius="18dp" />
+
+        <!-- Botón de alternancia para el modo Mock -->
+        <Button
+            android:id="@+id/btnMockToggle"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btnSmartSolar"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="20dp"
+            android:backgroundTint="@android:color/holo_green_dark"
+            android:padding="15dp"
+            android:text="🔄 Alternar Mock"
             android:textSize="18sp"
             android:textStyle="bold"
             app:cornerRadius="18dp" />
