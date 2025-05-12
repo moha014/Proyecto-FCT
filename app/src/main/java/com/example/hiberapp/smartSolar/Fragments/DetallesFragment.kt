@@ -30,16 +30,15 @@ class DetallesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Icono de información que muestra un popup cuando es clicado
+        // Icono para el popup de información
         val infoIcon = view.findViewById<ImageView>(R.id.icono_info)
         infoIcon?.setOnClickListener {
             mostrarDialogoInfo()
         }
 
-        // Cargar los detalles usando Retrofit
+        // Cargar los detalles con Retrofit
         cargarDetallesDesdeApi()
 
-        // También mantener el manejo de datos desde argumentos como backup
         val jsonData = arguments?.getString("jsonData")
         jsonData?.let {
             displayJsonData(it)

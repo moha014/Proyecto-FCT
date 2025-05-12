@@ -29,7 +29,7 @@ class FacturaFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Configurar el RecyclerView
+        // Configurar RecyclerView
         binding.recyclerFacturas.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerFacturas.adapter = FacturaAdapter(facturas) {
             AlertDialog.Builder(requireContext())
@@ -42,22 +42,20 @@ class FacturaFragment : Fragment() {
         // Configurar los clicks de la toolbar
         setupToolbar()
 
-        // Obtener los datos de facturas
         obtenerFacturas()
     }
 
     private fun setupToolbar() {
-        // Configurar el botón de flecha atrás
+        // Botón de flecha atrás
         binding.backArrow.setOnClickListener {
             requireActivity().onBackPressed()
         }
 
-        // Configurar el texto "Consumo" para volver atrás
         binding.consumoBack.setOnClickListener {
             requireActivity().onBackPressed()
         }
 
-        // Configurar el botón de filtro para abrir FiltrarFacturasFragment
+        // Botón para abrir FiltrarFacturasFragment
         binding.ivFilter.setOnClickListener {
             val filtrarFragment = FiltrarFacturasFragment.newInstance()
             requireActivity().supportFragmentManager.beginTransaction()

@@ -30,35 +30,32 @@ class FiltrarFacturasFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Referenciamos los elementos de la interfaz(FiltrarFacturasFragment)
         etFechaInicio = view.findViewById(R.id.etFechaInicio)
         etFechaFinal = view.findViewById(R.id.etFechaFinal)
         rangeSlider = view.findViewById(R.id.rangeSlider)
         tvMinSeleccionado = view.findViewById(R.id.tvMinSeleccionado)
         tvMaxSeleccionado = view.findViewById(R.id.tvMaxSeleccionado)
 
-        // Configuración de la seleccion de las fechas
         setupDatePickers()
-        // Configuración de la selección del importe de precio-precio(Slider)
         setupRangeSlider()
 
-        // Botón para cerrar el fragment
+        // Botón para cerrar fragment
         view.findViewById<ImageView>(R.id.ivCerrar).setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
         }
 
-        // Botón para aplicar lod filtros seleccionados
+        // Botón para aplicar lod filtros
         view.findViewById<Button>(R.id.btnAplicar).setOnClickListener {
             aplicarFiltros()
         }
 
-        // Botón para borrar los filtros seleccionador
+        // Botón para borrar los filtros
         view.findViewById<Button>(R.id.btnEliminarFiltros).setOnClickListener {
             limpiarFiltros()
         }
     }
 
-    // Muestra un calendario desplegable (DatePickerDialog) al clicar en los campos "Fecha"
+    // Muestra un calendario desplegable
     private fun setupDatePickers() {
         val calendar = Calendar.getInstance()
         val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
@@ -80,12 +77,11 @@ class FiltrarFacturasFragment : Fragment() {
         etFechaFinal.setOnClickListener { showDateDialog(etFechaFinal) }
     }
 
-    // Configuracion del Slider para seleccionar un rango de precios
+
     private fun setupRangeSlider() {
         rangeSlider.setValues(5f, 300f)
         rangeSlider.stepSize = 1f
 
-        // Actualiza la vista inicial con los valores predeterminados
         tvMinSeleccionado.text = "5 €"
         tvMaxSeleccionado.text = "300 €"
 
@@ -98,12 +94,12 @@ class FiltrarFacturasFragment : Fragment() {
         }
     }
 
-    // Aplicacion de los filtros y cierre del fragment
+
     private fun aplicarFiltros() {
         requireActivity().supportFragmentManager.popBackStack()
     }
 
-    // Restablecimiento de todos los campos del filtro a su estado inicial
+
     private fun limpiarFiltros() {
         etFechaInicio.setText("")
         etFechaFinal.setText("")

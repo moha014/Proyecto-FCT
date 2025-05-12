@@ -9,7 +9,7 @@ import retrofit2.http.GET
 
 interface ApiService {
     @Mock
-    @MockResponse(body = "facturas.json")
+    @MockResponse(body = "facturas_mock.json")
     @GET("facturas")
     fun obtenerFacturas(): Call<FacturaResponse>
 
