@@ -1,5 +1,6 @@
-package com.example.hiberapp.factura
+package com.example.hiberapp.dataretrofit.responses
 
+import com.example.hiberapp.factura.Factura
 import com.google.gson.annotations.SerializedName
 
 data class FacturaResponse(

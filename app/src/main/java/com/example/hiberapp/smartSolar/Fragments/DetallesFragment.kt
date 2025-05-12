@@ -9,9 +9,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.example.hiberapp.DataRetrofit.ApiClient
+import com.example.hiberapp.dataretrofit.api.ApiClient
 import com.example.hiberapp.R
-import com.google.gson.JsonObject
+import com.example.hiberapp.dataretrofit.responses.DetallesResponse
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call
@@ -52,7 +52,10 @@ class DetallesFragment : Fragment() {
             val call = apiService.obtenerDetalles()
 
             call.enqueue(object : Callback<DetallesResponse> {
-                override fun onResponse(call: Call<DetallesResponse>, response: Response<DetallesResponse>) {
+                override fun onResponse(
+                    call: Call<DetallesResponse>,
+                    response: Response<DetallesResponse>
+                ) {
                     if (response.isSuccessful && response.body() != null) {
                         val detalles = response.body()!!
                         actualizarUI(detalles)
@@ -83,8 +86,10 @@ class DetallesFragment : Fragment() {
         view?.findViewById<TextView>(R.id.tv_cau)?.text = detalles.cau
         view?.findViewById<TextView>(R.id.tv_estado_solicitud)?.text = detalles.estadoSolicitud
         view?.findViewById<TextView>(R.id.tv_tipo_autoconsumo)?.text = detalles.tipoAutoconsumo
-        view?.findViewById<TextView>(R.id.tv_compensacion_excedentes)?.text = detalles.compensacionExcedentes
-        view?.findViewById<TextView>(R.id.tv_potencia_instalacion)?.text = detalles.potenciaInstalacion
+        view?.findViewById<TextView>(R.id.tv_compensacion_excedentes)?.text =
+            detalles.compensacionExcedentes
+        view?.findViewById<TextView>(R.id.tv_potencia_instalacion)?.text =
+            detalles.potenciaInstalacion
     }
 
     // Muestra de un diálogo con información adicional

@@ -7,8 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.hiberapp.DataRetrofit.ApiClient
+import com.example.hiberapp.dataretrofit.api.ApiClient
 import com.example.hiberapp.databinding.FragmentFacturaBinding
+import com.example.hiberapp.dataretrofit.responses.FacturaResponse
 import com.example.hiberapp.ui.factura.FacturaAdapter
 import com.example.hiberapp.ui.factura.FiltrarFacturasFragment
 import retrofit2.Call
@@ -21,7 +22,11 @@ class FacturaFragment : Fragment() {
 
     private val facturas = mutableListOf<Factura>()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentFacturaBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -70,7 +75,10 @@ class FacturaFragment : Fragment() {
         val call = apiService.obtenerFacturas()
 
         call.enqueue(object : Callback<FacturaResponse> {
-            override fun onResponse(call: Call<FacturaResponse>, response: Response<FacturaResponse>) {
+            override fun onResponse(
+                call: Call<FacturaResponse>,
+                response: Response<FacturaResponse>
+            ) {
                 if (response.isSuccessful) {
                     response.body()?.let { facturaResponse ->
                         facturas.clear()
@@ -78,7 +86,11 @@ class FacturaFragment : Fragment() {
                         binding.recyclerFacturas.adapter?.notifyDataSetChanged()
                     }
                 } else {
-                    showErrorDialog("Error al obtener las facturas: ${response.errorBody()?.string()}")
+                    showErrorDialog(
+                        "Error al obtener las facturas: ${
+                            response.errorBody()?.string()
+                        }"
+                    )
                 }
             }
 

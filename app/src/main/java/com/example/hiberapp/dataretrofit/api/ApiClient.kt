@@ -1,12 +1,10 @@
-package com.example.hiberapp.DataRetrofit
+package com.example.hiberapp.dataretrofit.api
 
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
 import co.infinum.retromock.Retromock
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.io.InputStreamReader
 
 object ApiClient {
     private const val BASE_URL = "https://e8a0d832-0371-4941-a72a-4bfd76f98e31.mock.pstmn.io/"

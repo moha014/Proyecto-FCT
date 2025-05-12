@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.hiberapp.SmartSolarActivity
 import com.example.hiberapp.databinding.ActivityMenuBinding
 import com.example.hiberapp.factura.FacturaFragment
-import com.example.hiberapp.DataRetrofit.ApiClient
+import com.example.hiberapp.dataretrofit.api.ApiClient
 
 class MenuActivity : AppCompatActivity() {
 

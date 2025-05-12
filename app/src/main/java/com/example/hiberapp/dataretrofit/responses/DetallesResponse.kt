@@ -1,4 +1,4 @@
-package com.example.hiberapp.smartSolar.Fragments
+package com.example.hiberapp.dataretrofit.responses
 
 import com.google.gson.annotations.SerializedName
 
