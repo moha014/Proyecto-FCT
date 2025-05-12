@@ -82,11 +82,19 @@ class FiltrarFacturasFragment : Fragment() {
 
     // Configuracion del Slider para seleccionar un rango de precios
     private fun setupRangeSlider() {
-        rangeSlider.setValues(5f, 250f)
+        rangeSlider.setValues(5f, 300f)
+        rangeSlider.stepSize = 1f
+
+        // Actualiza la vista inicial con los valores predeterminados
+        tvMinSeleccionado.text = "5 €"
+        tvMaxSeleccionado.text = "300 €"
+
         rangeSlider.addOnChangeListener { slider, _, _ ->
             val valores = slider.values
-            tvMinSeleccionado.text = "${valores[0].toInt()} €"
-            tvMaxSeleccionado.text = "${valores[1].toInt()} €"
+            val minValor = valores[0].toInt()
+            val maxValor = valores[1].toInt()
+            tvMinSeleccionado.text = "$minValor €"
+            tvMaxSeleccionado.text = "$maxValor €"
         }
     }
 

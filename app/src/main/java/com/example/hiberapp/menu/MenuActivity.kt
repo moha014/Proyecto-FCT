@@ -33,8 +33,13 @@ class MenuActivity : AppCompatActivity() {
 
         binding.btnMockToggle.setOnClickListener {
             ApiClient.enableMock(this)
-            val message = if (ApiClient.useMock) "Modo Mock ACTIVADO" else "Modo Mock DESACTIVADO"
+
+            val isActive = ApiClient.useMock
+            binding.btnMockToggle.alpha = if (isActive) 1.0f else 0.7f
+
+            val message = if (isActive) "Modo Mock ACTIVADO" else "Modo Mock DESACTIVADO"
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         }
+
     }
 }

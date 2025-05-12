@@ -10,12 +10,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.hiberapp.DataRetrofit.ApiClient
 import com.example.hiberapp.databinding.FragmentFacturaBinding
 import com.example.hiberapp.ui.factura.FacturaAdapter
+import com.example.hiberapp.ui.factura.FiltrarFacturasFragment
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class FacturaFragment : Fragment() {
-
     private var _binding: FragmentFacturaBinding? = null
     private val binding get() = _binding!!
 
@@ -29,6 +29,7 @@ class FacturaFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Configurar el RecyclerView
         binding.recyclerFacturas.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerFacturas.adapter = FacturaAdapter(facturas) {
             AlertDialog.Builder(requireContext())
@@ -38,7 +39,32 @@ class FacturaFragment : Fragment() {
                 .show()
         }
 
+        // Configurar los clicks de la toolbar
+        setupToolbar()
+
+        // Obtener los datos de facturas
         obtenerFacturas()
+    }
+
+    private fun setupToolbar() {
+        // Configurar el botón de flecha atrás
+        binding.backArrow.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
+
+        // Configurar el texto "Consumo" para volver atrás
+        binding.consumoBack.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
+
+        // Configurar el botón de filtro para abrir FiltrarFacturasFragment
+        binding.ivFilter.setOnClickListener {
+            val filtrarFragment = FiltrarFacturasFragment.newInstance()
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(android.R.id.content, filtrarFragment)
+                .addToBackStack(null)
+                .commit()
+        }
     }
 
     private fun obtenerFacturas() {

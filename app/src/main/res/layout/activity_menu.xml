@@ -4,76 +4,67 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/logo1"
-    android:gravity="center"
     android:orientation="vertical"
-    android:padding="15dp">
+    android:gravity="center_horizontal"
+    android:padding="16dp">
 
-    <!-- Toolbar simplificada solo con la X -->
+    <!-- Logo como toolbar decorativo -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_width="390dp"
-        android:layout_height="250dp"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
         android:background="@drawable/iberdrolalogo"
         android:gravity="center"
-        android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <!-- Textos encima de los botones -->
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_marginTop="125dp"
-        android:orientation="vertical">
-    </LinearLayout>
-
-    <!-- Contenedor para los botones centrados -->
-    <RelativeLayout
+    <!-- Espacio entre toolbar y botones -->
+    <Space
         android:layout_width="match_parent"
+        android:layout_height="60dp" />
+
+    <!-- Botones con diseño moderno y atractivo -->
+    <Button
+        android:id="@+id/btnFacturas"
+        android:layout_width="280dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="0dp">
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="#4CAF50"
+        android:elevation="8dp"
+        android:padding="18dp"
+        android:text="📋 Facturas"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:alpha="1"
+        app:cornerRadius="24dp" />
 
-        <Button
-            android:id="@+id/btnFacturas"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:backgroundTint="@android:color/holo_green_light"
-            android:padding="15dp"
-            android:text="📋Facturas"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:cornerRadius="18dp" />
+    <Button
+        android:id="@+id/btnSmartSolar"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="#66BB6A"
+        android:elevation="8dp"
+        android:padding="18dp"
+        android:text="☀️ Smart Solar"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:alpha="1"
+        app:cornerRadius="24dp" />
 
-        <Button
-            android:id="@+id/btnSmartSolar"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/btnFacturas"
-            android:layout_centerHorizontal="true"
-            android:layout_margin="20dp"
-            android:backgroundTint="@android:color/holo_green_light"
-            android:padding="15dp"
-            android:text="☀️Smart Solar"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:cornerRadius="18dp" />
-
-        <!-- Botón de alternancia para el modo Mock -->
-        <Button
-            android:id="@+id/btnMockToggle"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/btnSmartSolar"
-            android:layout_centerHorizontal="true"
-            android:layout_margin="20dp"
-            android:backgroundTint="@android:color/holo_green_dark"
-            android:padding="15dp"
-            android:text="🔄 Alternar Mock"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:cornerRadius="18dp" />
-
-    </RelativeLayout>
-
+    <!-- Botón de Mock claramente distinto -->
+    <Button
+        android:id="@+id/btnMockToggle"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#FF9800"
+    android:elevation="12dp"
+    android:padding="18dp"
+    android:text="🔄 Alternar Mock"
+    android:textColor="#FFFFFF"
+    android:textSize="20sp"
+    android:textStyle="bold"
+    android:alpha="0.7"
+    app:cornerRadius="24dp" />
 </LinearLayout>
