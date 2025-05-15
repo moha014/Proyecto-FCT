@@ -1,5 +1,6 @@
 package com.example.hiberapp.ui.factura
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -8,34 +9,45 @@ import com.example.hiberapp.factura.Factura
 
 class FacturaAdapter(
     private val facturas: List<Factura>,
-    private val onItemClick: (Factura) -> Unit
+    private val onItemClick: () -> Unit
 ) : RecyclerView.Adapter<FacturaAdapter.FacturaViewHolder>() {
 
-    inner class FacturaViewHolder(private val binding: ItemFacturaBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        fun bind(factura: Factura) {
-            binding.tvFecha.text = factura.fecha
-            binding.tvPrecio.text = String.format("%.2f €", factura.importeOrdenacion.toDouble())
-            binding.tvEstado.text = factura.descEstado ?: ""
-
-            binding.facturaItemRoot.setOnClickListener {
-                onItemClick(factura)
-            }
-        }
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FacturaViewHolder {
-        val binding = ItemFacturaBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        )
+        val binding = ItemFacturaBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return FacturaViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: FacturaViewHolder, position: Int) {
-        holder.bind(facturas[position])
+        val factura = facturas[position]
+        holder.bind(factura, onItemClick)
     }
 
-    override fun getItemCount() = facturas.size
+    override fun getItemCount(): Int = facturas.size
+
+    class FacturaViewHolder(private val binding: ItemFacturaBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(factura: Factura, onItemClick: () -> Unit) {
+            // Asignar los datos de la factura a las vistas
+            binding.tvFecha.text = factura.fecha
+            binding.tvEstado.text = factura.descEstado
+
+
+            try {
+                val precioNumero = factura.importeOrdenacion.toDouble()
+                val precioFormateado = String.format("%.2f €", precioNumero)
+                binding.tvPrecio.text = precioFormateado
+            } catch (e: Exception) {
+                binding.tvPrecio.text = factura.importeOrdenacion
+            }
+
+            if (factura.descEstado == "Pagada") {
+                binding.tvEstado.setTextColor(Color.GREEN) // Color verde para "Pagado"
+            } else if (factura.descEstado == "Pendiente de pago") {
+                binding.tvEstado.setTextColor(Color.RED) // Color rojo para "Pendiente de pago"
+            }
+
+            binding.facturaItemRoot.setOnClickListener {
+                onItemClick()
+            }
+        }
+    }
 }

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="GreenDatePickerTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@android:color/holo_green_light</item>
+        <item name="colorControlActivated">@android:color/holo_green_light</item>
+        <item name="android:selectableItemBackgroundBorderless">@android:color/holo_green_light</item>
+        <item name="android:colorControlHighlight">@android:color/holo_green_light</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/GreenDatePickerButtonStyle</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/GreenDatePickerButtonStyle</item>
+    </style>
+
+    <style name="GreenDatePickerButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@android:color/holo_green_light</item>
+    </style>
+</resources>

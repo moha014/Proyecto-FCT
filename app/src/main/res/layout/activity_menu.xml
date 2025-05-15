@@ -5,24 +5,21 @@
     android:layout_height="match_parent"
     android:background="@drawable/logo1"
     android:orientation="vertical"
-    android:gravity="center_horizontal"
-    android:padding="16dp">
+    android:gravity="center"
+    android:padding="16dp"
+    android:baselineAligned="false">
 
-    <!-- Logo como toolbar decorativo -->
+    <!-- Logo como imagen centrada -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_width="match_parent"
+        android:layout_width="200dp"
         android:layout_height="200dp"
         android:background="@drawable/iberdrolalogo"
         android:gravity="center"
+        android:layout_marginBottom="40dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <!-- Espacio entre toolbar y botones -->
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="60dp" />
-
-    <!-- Botones con diseño moderno y atractivo -->
+    <!-- Botones con diseño moderno y centrado -->
     <Button
         android:id="@+id/btnFacturas"
         android:layout_width="280dp"
@@ -53,18 +50,18 @@
         android:alpha="1"
         app:cornerRadius="24dp" />
 
-    <!-- Botón de Mock claramente distinto -->
     <Button
         android:id="@+id/btnMockToggle"
         android:layout_width="280dp"
         android:layout_height="wrap_content"
         android:backgroundTint="#FF9800"
-    android:elevation="12dp"
-    android:padding="18dp"
-    android:text="🔄 Alternar Mock"
-    android:textColor="#FFFFFF"
-    android:textSize="20sp"
-    android:textStyle="bold"
-    android:alpha="0.7"
-    app:cornerRadius="24dp" />
+        android:elevation="12dp"
+        android:padding="18dp"
+        android:text="🔄 Alternar Mock"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:alpha="0.7"
+        app:cornerRadius="24dp" />
+
 </LinearLayout>

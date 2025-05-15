@@ -32,7 +32,13 @@ object ApiClient {
                 .defaultBodyFactory { context.assets.open("facturas_mock.json") }
                 .build()
 
+            val mockRetrofit2 = Retromock.Builder()
+                .retrofit(retrofit)
+                .defaultBodyFactory { context.assets.open("detalles.json") }
+                .build()
+
             mockRetrofit.create(ApiService::class.java)
+            mockRetrofit2.create(ApiService::class.java)
         } else {
             retrofit.create(ApiService::class.java)
         }

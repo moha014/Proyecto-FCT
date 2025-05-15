@@ -30,13 +30,11 @@ class DetallesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Icono para el popup de información
         val infoIcon = view.findViewById<ImageView>(R.id.icono_info)
         infoIcon?.setOnClickListener {
             mostrarDialogoInfo()
         }
 
-        // Cargar los detalles con Retrofit
         cargarDetallesDesdeApi()
 
         val jsonData = arguments?.getString("jsonData")
@@ -45,7 +43,6 @@ class DetallesFragment : Fragment() {
         }
     }
 
-    // Cargar los detalles desde la API usando Retrofit
     private fun cargarDetallesDesdeApi() {
         context?.let { ctx ->
             val apiService = ApiClient.getService(ctx)
@@ -81,7 +78,6 @@ class DetallesFragment : Fragment() {
         }
     }
 
-    // Actualiza la UI con los datos del objeto DetallesResponse
     private fun actualizarUI(detalles: DetallesResponse) {
         view?.findViewById<TextView>(R.id.tv_cau)?.text = detalles.cau
         view?.findViewById<TextView>(R.id.tv_estado_solicitud)?.text = detalles.estadoSolicitud
@@ -92,7 +88,6 @@ class DetallesFragment : Fragment() {
             detalles.potenciaInstalacion
     }
 
-    // Muestra de un diálogo con información adicional
     private fun mostrarDialogoInfo() {
         val dialog = Dialog(requireContext())
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -107,7 +102,6 @@ class DetallesFragment : Fragment() {
         dialog.show()
     }
 
-    // Toma de un string json, correspondiente conversion a objeto y actualización de los TextView con los valores
     fun displayJsonData(jsonString: String) {
         try {
             val jsonObject = JSONObject(jsonString)

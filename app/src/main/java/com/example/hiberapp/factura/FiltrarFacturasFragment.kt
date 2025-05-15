@@ -2,12 +2,14 @@ package com.example.hiberapp.ui.factura
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
 import com.example.hiberapp.R
+import com.example.hiberapp.factura.FacturaFragment
 import com.google.android.material.slider.RangeSlider
 import java.text.SimpleDateFormat
 import java.util.*
@@ -19,6 +21,11 @@ class FiltrarFacturasFragment : Fragment() {
     private lateinit var rangeSlider: RangeSlider
     private lateinit var tvMinSeleccionado: TextView
     private lateinit var tvMaxSeleccionado: TextView
+    private lateinit var cbPagado: CheckBox
+    private lateinit var cbAnuladas: CheckBox
+    private lateinit var cbCuotaFija: CheckBox
+    private lateinit var cbPendiente: CheckBox
+    private lateinit var cbPlanPago: CheckBox
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,6 +43,13 @@ class FiltrarFacturasFragment : Fragment() {
         tvMinSeleccionado = view.findViewById(R.id.tvMinSeleccionado)
         tvMaxSeleccionado = view.findViewById(R.id.tvMaxSeleccionado)
 
+        // Inicializar checkboxes
+        cbPagado = view.findViewById(R.id.cbPagado)
+        cbAnuladas = view.findViewById(R.id.cbAnuladas)
+        cbCuotaFija = view.findViewById(R.id.cbCuotaFija)
+        cbPendiente = view.findViewById(R.id.cbPendiente)
+        cbPlanPago = view.findViewById(R.id.cbPlanPago)
+
         setupDatePickers()
         setupRangeSlider()
 
@@ -44,7 +58,7 @@ class FiltrarFacturasFragment : Fragment() {
             requireActivity().supportFragmentManager.popBackStack()
         }
 
-        // Botón para aplicar lod filtros
+        // Botón para aplicar los filtros
         view.findViewById<Button>(R.id.btnAplicar).setOnClickListener {
             aplicarFiltros()
         }
@@ -61,8 +75,10 @@ class FiltrarFacturasFragment : Fragment() {
         val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 
         val showDateDialog: (EditText) -> Unit = { editText ->
-            DatePickerDialog(
+            // Usamos un tema personalizado para el DatePickerDialog
+            val datePickerDialog = DatePickerDialog(
                 requireContext(),
+                R.style.GreenDatePickerTheme,
                 { _, year, month, day ->
                     calendar.set(year, month, day)
                     editText.setText(formatter.format(calendar.time))
@@ -70,7 +86,9 @@ class FiltrarFacturasFragment : Fragment() {
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH)
-            ).show()
+            )
+
+            datePickerDialog.show()
         }
 
         etFechaInicio.setOnClickListener { showDateDialog(etFechaInicio) }
@@ -79,11 +97,11 @@ class FiltrarFacturasFragment : Fragment() {
 
 
     private fun setupRangeSlider() {
-        rangeSlider.setValues(5f, 300f)
+        rangeSlider.setValues(1f, 70f)
         rangeSlider.stepSize = 1f
 
-        tvMinSeleccionado.text = "5 €"
-        tvMaxSeleccionado.text = "300 €"
+        tvMinSeleccionado.text = "1 €"
+        tvMaxSeleccionado.text = "70 €"
 
         rangeSlider.addOnChangeListener { slider, _, _ ->
             val valores = slider.values
@@ -95,24 +113,51 @@ class FiltrarFacturasFragment : Fragment() {
     }
 
 
+
+
     private fun aplicarFiltros() {
-        requireActivity().supportFragmentManager.popBackStack()
+        try {
+            val fechaInicio = etFechaInicio.text.toString().ifEmpty { null }
+            val fechaFin = etFechaFinal.text.toString().ifEmpty { null }
+            val valores = rangeSlider.values
+            val montoMinimo = valores[0].toInt()
+            val montoMaximo = valores[1].toInt()
+
+            val bundle = Bundle().apply {
+                putString("fechaInicio", fechaInicio)
+                putString("fechaFin", fechaFin)
+                putInt("montoMinimo", montoMinimo)
+                putInt("montoMaximo", montoMaximo)
+                putBoolean("pagado", cbPagado.isChecked)
+                putBoolean("anuladas", cbAnuladas.isChecked)
+                putBoolean("cuotaFija", cbCuotaFija.isChecked)
+                putBoolean("pendiente", cbPendiente.isChecked)
+                putBoolean("planPago", cbPlanPago.isChecked)
+            }
+
+            // Enviamos los datos al fragment receptor
+            parentFragmentManager.setFragmentResult("filtrosFacturas", bundle)
+
+            // Cerramos el fragmento
+            requireActivity().supportFragmentManager.popBackStack()
+
+        } catch (e: Exception) {
+            Toast.makeText(context, "Error al aplicar filtros: ${e.message}", Toast.LENGTH_SHORT).show()
+        }
     }
+
 
 
     private fun limpiarFiltros() {
         etFechaInicio.setText("")
         etFechaFinal.setText("")
-        rangeSlider.setValues(1f, 300f)
+        rangeSlider.setValues(1f, 70f)
 
-        val checkBoxIds = listOf(
-            R.id.cbPagado, R.id.cbAnuladas, R.id.cbCuotaFija,
-            R.id.cbPendiente, R.id.cbPlanPago
-        )
-
-        checkBoxIds.forEach {
-            view?.findViewById<CheckBox>(it)?.isChecked = false
-        }
+        cbPagado.isChecked = false
+        cbAnuladas.isChecked = false
+        cbCuotaFija.isChecked = false
+        cbPendiente.isChecked = false
+        cbPlanPago.isChecked = false
     }
 
     companion object {

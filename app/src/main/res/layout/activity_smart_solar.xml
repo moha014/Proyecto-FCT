@@ -3,15 +3,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_marginTop="20dp"
+    android:layout_height="match_parent"
     android:background="@color/white"
-    android:id="@+id/SmartSolarPrincipal"
-    android:layout_height="match_parent">
+    android:id="@+id/SmartSolarPrincipal">
 
-    <Toolbar
+    <!-- Toolbar con botón de atrás clicable -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/toolbar"
         android:background="#FFFFFF"
         android:theme="@style/ThemeOverlay.AppCompat.Light"
         app:titleTextColor="@color/black"
@@ -20,32 +20,34 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
             <ImageView
                 android:id="@+id/backArrow"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="8dp"
                 android:src="@drawable/ic_arrow_back"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
                 app:tint="#8BC34A" />
 
             <TextView
+                android:id="@+id/TextBack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/TextBack"
+                android:layout_marginStart="8dp"
                 android:text="Atrás"
                 android:textColor="#8BC34A"
-                android:textSize="16sp"
-                android:layout_toEndOf="@id/backArrow"
-                android:layout_marginStart="4dp"
-                android:layout_centerVertical="true"/>
-        </RelativeLayout>
-    </Toolbar>
+                android:textSize="18sp" />
+        </LinearLayout>
+    </androidx.appcompat.widget.Toolbar>
 
+    <!-- Título principal -->
     <TextView
         android:id="@+id/tvSmartSolar"
         android:layout_width="wrap_content"
@@ -60,6 +62,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
+    <!-- Pestañas -->
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
@@ -67,24 +70,8 @@
         app:layout_constraintTop_toBottomOf="@+id/tvSmartSolar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:tabSelectedTextColor="@color/black">
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Mi Instalación"/>
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Energía" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Detalles" />
-
-    </com.google.android.material.tabs.TabLayout>
+        app:tabSelectedTextColor="@color/black"
+        app:tabIndicatorColor="@android:color/holo_green_light" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
@@ -94,4 +81,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -146,7 +146,7 @@
                     android:id="@+id/tvMaxImporte"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="300 €"
+                    android:text="70 €"
                     android:layout_alignParentEnd="true"/>
             </RelativeLayout>
 
@@ -160,7 +160,7 @@
                     android:id="@+id/tvMinSeleccionado"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="5 €"
+                    android:text="1 €"
                     android:textColor="@android:color/holo_green_light"
                     android:layout_alignParentStart="true"/>
 
@@ -176,7 +176,7 @@
                     android:id="@+id/tvMaxSeleccionado"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="250 €"
+                    android:text="70 €"
                     android:textColor="@android:color/holo_green_light"
                     android:layout_alignParentEnd="true"/>
             </RelativeLayout>
@@ -186,7 +186,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:valueFrom="1"
-                android:valueTo="300"
+                android:valueTo="70"
                 app:thumbColor="@android:color/holo_green_light"
                 app:trackColorActive="@android:color/holo_green_light"
                 app:trackColorInactive="#DDDDDD"
@@ -213,31 +213,36 @@
                 android:id="@+id/cbPagado"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Pagadas" />
+                android:text="Pagadas"
+                android:buttonTint="@android:color/holo_green_light" />
 
             <CheckBox
                 android:id="@+id/cbAnuladas"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Anuladas" />
+                android:text="Anuladas"
+                android:buttonTint="@android:color/holo_green_light" />
 
             <CheckBox
                 android:id="@+id/cbCuotaFija"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Cuota Fija" />
+                android:text="Cuota Fija"
+                android:buttonTint="@android:color/holo_green_light" />
 
             <CheckBox
                 android:id="@+id/cbPendiente"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Pendientes de pago" />
+                android:text="Pendientes de pago"
+                android:buttonTint="@android:color/holo_green_light" />
 
             <CheckBox
                 android:id="@+id/cbPlanPago"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Plan de pago" />
+                android:text="Plan de pago"
+                android:buttonTint="@android:color/holo_green_light" />
         </LinearLayout>
     </ScrollView>
 
