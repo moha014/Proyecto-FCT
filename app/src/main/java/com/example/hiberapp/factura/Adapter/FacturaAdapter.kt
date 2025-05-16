@@ -34,9 +34,9 @@ class FacturaAdapter(
             try {
                 val precioNumero = factura.importeOrdenacion.toDouble()
                 val precioFormateado = String.format("%.2f €", precioNumero)
-                binding.tvPrecio.text = precioFormateado
+                binding.tvImporte.text = precioFormateado
             } catch (e: Exception) {
-                binding.tvPrecio.text = factura.importeOrdenacion
+                binding.tvImporte.text = factura.importeOrdenacion
             }
 
             if (factura.descEstado == "Pagada") {

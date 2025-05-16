@@ -77,8 +77,6 @@ class FacturaFragment : Fragment() {
             "filtrosFacturas",
             viewLifecycleOwner
         ) { _, bundle ->
-
-            // Aplicar filtros
             aplicarFiltros(
                 fechaInicio = bundle.getString("fechaInicio"),
                 fechaFin = bundle.getString("fechaFin"),
@@ -128,7 +126,9 @@ class FacturaFragment : Fragment() {
                 if (response.isSuccessful) {
                     response.body()?.let { facturaResponse ->
                         todasLasFacturas.clear()
-                        todasLasFacturas.addAll(facturaResponse.facturas)
+                        facturaResponse.facturas?.let {
+                            todasLasFacturas.addAll(it)
+                        }
 
                         if (hayFiltrosAplicados) {
                             aplicarFiltrosGuardados()
@@ -139,11 +139,7 @@ class FacturaFragment : Fragment() {
                         }
                     }
                 } else {
-                    showErrorDialog(
-                        "Error al obtener las facturas: ${
-                            response.errorBody()?.string()
-                        }"
-                    )
+                    showErrorDialog("Error al obtener las facturas.")
                 }
             }
 
@@ -179,7 +175,6 @@ class FacturaFragment : Fragment() {
         pendiente: Boolean,
         planPago: Boolean
     ) {
-        // Guardar filtros actuales
         fechaInicioActual = fechaInicio
         fechaFinActual = fechaFin
         montoMinimoActual = montoMinimo
@@ -228,20 +223,21 @@ class FacturaFragment : Fragment() {
             // Monto
             if (cumpleFiltros) {
                 try {
-                    val monto = factura.importeOrdenacion.toFloat()
-                    if (monto < montoMinimo || monto > montoMaximo) cumpleFiltros = false
+                    val monto = factura.importeOrdenacion.toDoubleOrNull()
+                    if (monto == null || monto < montoMinimo || monto > montoMaximo) cumpleFiltros = false
                 } catch (_: Exception) {
+                    // Error silencioso
                 }
             }
 
             // Estado
             if (cumpleFiltros && (pagado || anuladas || cuotaFija || pendiente || planPago)) {
-                val estado = factura.descEstado ?: ""
-                val coincide = (pagado && estado == "pagado") ||
-                        (anuladas && estado == "anulada") ||
-                        (cuotaFija && estado == "cuota fija") ||
-                        (pendiente && estado == "pendiente") ||
-                        (planPago && estado == "plan de pago")
+                val estado = factura.descEstado?.lowercase(Locale.getDefault()) ?: ""
+                val coincide = (pagado && estado.contains("pagad")) ||
+                        (anuladas && estado.contains("anulad")) ||
+                        (cuotaFija && estado.contains("cuota")) ||
+                        (pendiente && estado.contains("pendient")) ||
+                        (planPago && estado.contains("plan"))
                 if (!coincide) cumpleFiltros = false
             }
 
