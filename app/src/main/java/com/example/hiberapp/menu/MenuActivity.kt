@@ -8,6 +8,10 @@ import com.example.hiberapp.SmartSolarActivity
 import com.example.hiberapp.databinding.ActivityMenuBinding
 import com.example.hiberapp.factura.FacturaFragment
 import com.example.hiberapp.dataretrofit.api.ApiClient
+import com.example.hiberapp.data.local.AppDatabase
+import com.example.hiberapp.data.local.FacturaRepository
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 
 class MenuActivity : AppCompatActivity() {
 
@@ -18,6 +22,13 @@ class MenuActivity : AppCompatActivity() {
 
         binding = ActivityMenuBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // INICIALIZAR ROOM Y DESCARGAR DATOS DE LA API
+        val db = AppDatabase.getDatabase(this)
+        val repo = FacturaRepository(this, db.facturaDao())
+        lifecycleScope.launch {
+            repo.refreshFacturasFromApi()
+        }
 
         binding.btnFacturas.setOnClickListener {
             supportFragmentManager.beginTransaction()
@@ -39,6 +50,11 @@ class MenuActivity : AppCompatActivity() {
 
             val message = if (isActive) "Modo Mock ACTIVADO" else "Modo Mock DESACTIVADO"
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+
+            // ACTUALIZAR ROOM SEGÚN EL MODO
+            lifecycleScope.launch {
+                repo.refreshFacturasFromApi()
+            }
         }
 
     }
