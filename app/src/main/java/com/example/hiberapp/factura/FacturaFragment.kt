@@ -19,6 +19,14 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.formatter.ValueFormatter
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
+import android.graphics.Color
 
 class FacturaFragment : Fragment() {
 
@@ -89,6 +97,10 @@ class FacturaFragment : Fragment() {
                 planPago = bundle.getBoolean("planPago")
             )
         }
+
+        binding.switchChart.setOnCheckedChangeListener { _, _ ->
+            actualizarGrafica()
+        }
     }
 
     private fun setupToolbar() {
@@ -136,16 +148,17 @@ class FacturaFragment : Fragment() {
                             facturasFiltradas.clear()
                             facturasFiltradas.addAll(todasLasFacturas)
                             binding.recyclerFacturas.adapter?.notifyDataSetChanged()
+                            actualizarGrafica()
                         }
                     }
                 } else {
-                    showErrorDialog("Error al obtener las facturas.")
+                    showErrorDialog(getString(R.string.error_al_obtener_las_facturas))
                 }
             }
 
             override fun onFailure(call: Call<FacturaResponse>, t: Throwable) {
                 mostrarCargando(false)
-                showErrorDialog("Error de conexión: ${t.message}")
+                showErrorDialog(getString(R.string.error_de_conexi_n, t.message))
             }
         })
     }
@@ -204,7 +217,8 @@ class FacturaFragment : Fragment() {
                     val fechaFactura = formato.parse(factura.fecha)
                     if (fechaFactura.before(inicio)) cumpleFiltros = false
                 } catch (_: Exception) {
-                    Toast.makeText(context, "Error en fecha inicio", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context,
+                        getString(R.string.error_en_fecha_inicio), Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -216,7 +230,8 @@ class FacturaFragment : Fragment() {
                     val fechaFactura = formato.parse(factura.fecha)
                     if (fechaFactura.after(fin)) cumpleFiltros = false
                 } catch (_: Exception) {
-                    Toast.makeText(context, "Error en fecha fin", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context,
+                        getString(R.string.error_en_fecha_fin), Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -245,21 +260,113 @@ class FacturaFragment : Fragment() {
         }
 
         binding.recyclerFacturas.adapter?.notifyDataSetChanged()
+        actualizarGrafica()
 
         if (facturasFiltradas.isEmpty()) {
             Toast.makeText(
                 requireContext(),
-                "No hay facturas que coincidan con los filtros",
+                getString(R.string.no_hay_facturas_que_coincidan_con_los_filtros),
                 Toast.LENGTH_SHORT
             ).show()
         }
     }
 
+    private fun actualizarGrafica() {
+        val isBar = binding.switchChart.isChecked
+
+        // Fechas para el eje X
+        val fechas = facturasFiltradas.map { factura ->
+            try {
+                val inputFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
+                val outputFormat = SimpleDateFormat("MMM.yy", Locale.getDefault())
+                outputFormat.format(inputFormat.parse(factura.fecha) ?: Date())
+            } catch (e: Exception) {
+                factura.fecha
+            }
+        }
+
+        if (isBar) {
+            // Mostrar solo el BarChart
+            binding.barChart.visibility = View.VISIBLE
+            binding.lineChart.visibility = View.GONE
+
+            val chart = binding.barChart
+            val entriesPonta = facturasFiltradas.mapIndexedNotNull { index, factura ->
+                factura.importeOrdenacion.toFloatOrNull()?.let { importe ->
+                    BarEntry(index.toFloat(), floatArrayOf(importe * 0.7f, importe * 0.3f))
+                }
+            }
+            if (entriesPonta.isNotEmpty()) {
+                val dataSet = BarDataSet(entriesPonta, "Consumo")
+                dataSet.setColors(Color.parseColor("#8BC34A"), Color.parseColor("#B3E5FC"))
+                dataSet.stackLabels = arrayOf("Ponta", "Cheias")
+                chart.data = BarData(dataSet)
+                chart.axisLeft.axisMinimum = 0f
+            } else {
+                chart.clear()
+            }
+            chart.xAxis.valueFormatter = object : ValueFormatter() {
+                override fun getFormattedValue(value: Float): String {
+                    val index = value.toInt()
+                    return if (index in fechas.indices) fechas[index] else ""
+                }
+            }
+            chart.xAxis.granularity = 1f
+            chart.xAxis.labelRotationAngle = -30f
+            chart.xAxis.textColor = Color.DKGRAY
+            chart.axisLeft.textColor = Color.DKGRAY
+            chart.axisRight.isEnabled = false
+            chart.legend.isEnabled = true
+            chart.description.isEnabled = false
+            chart.invalidate()
+        } else {
+            // Mostrar solo el LineChart
+            binding.barChart.visibility = View.GONE
+            binding.lineChart.visibility = View.VISIBLE
+
+            val chart = binding.lineChart
+            val entries = facturasFiltradas.mapIndexedNotNull { index, factura ->
+                factura.importeOrdenacion.toFloatOrNull()?.let { importe ->
+                    Entry(index.toFloat(), importe)
+                }
+            }
+            if (entries.isNotEmpty()) {
+                val dataSet = LineDataSet(entries, "Importe de facturas")
+                dataSet.color = Color.parseColor("#8BC34A")
+                dataSet.setCircleColor(Color.parseColor("#8BC34A"))
+                dataSet.circleRadius = 7f
+                dataSet.lineWidth = 3f
+                dataSet.setDrawFilled(true)
+                dataSet.fillColor = Color.parseColor("#8BC34A")
+                dataSet.fillAlpha = 60
+                dataSet.valueTextSize = 12f
+                chart.data = LineData(dataSet)
+                chart.axisLeft.axisMinimum = 0f
+            } else {
+                chart.clear()
+            }
+            chart.xAxis.valueFormatter = object : ValueFormatter() {
+                override fun getFormattedValue(value: Float): String {
+                    val index = value.toInt()
+                    return if (index in fechas.indices) fechas[index] else ""
+                }
+            }
+            chart.xAxis.granularity = 1f
+            chart.xAxis.labelRotationAngle = -30f
+            chart.xAxis.textColor = Color.DKGRAY
+            chart.axisLeft.textColor = Color.DKGRAY
+            chart.axisRight.isEnabled = false
+            chart.legend.isEnabled = true
+            chart.description.isEnabled = false
+            chart.invalidate()
+        }
+    }
+
     private fun showErrorDialog(message: String) {
         AlertDialog.Builder(requireContext())
-            .setTitle("Error")
+            .setTitle(getString(R.string.error))
             .setMessage(message)
-            .setPositiveButton("Cerrar", null)
+            .setPositiveButton(getString(R.string.cerrar), null)
             .show()
     }
 

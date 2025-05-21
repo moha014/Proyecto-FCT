@@ -3,6 +3,7 @@ package com.example.hiberapp.dataretrofit.api
 import android.content.Context
 import android.widget.Toast
 import co.infinum.retromock.Retromock
+import com.example.hiberapp.R
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -21,7 +22,7 @@ object ApiClient {
 
     fun enableMock(context: Context) {
         useMock = !useMock
-        val mensaje = if (useMock) "Modo Mock ACTIVADO" else "Modo Mock DESACTIVADO"
+        val mensaje = if (useMock) context.getString(R.string.modo_mock_activado) else "Modo Mock DESACTIVADO"
         Toast.makeText(context, mensaje, Toast.LENGTH_SHORT).show()
     }
 

@@ -72,7 +72,7 @@ class FiltrarFacturasFragment : Fragment() {
     // Muestra un calendario desplegable
     private fun setupDatePickers() {
         val calendar = Calendar.getInstance()
-        val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val formatter = SimpleDateFormat(getString(R.string.dd_mm_yyyy), Locale.getDefault())
 
         val showDateDialog: (EditText) -> Unit = { editText ->
             // Usamos un tema personalizado para el DatePickerDialog
@@ -100,8 +100,8 @@ class FiltrarFacturasFragment : Fragment() {
         rangeSlider.setValues(1f, 70f)
         rangeSlider.stepSize = 1f
 
-        tvMinSeleccionado.text = "1 €"
-        tvMaxSeleccionado.text = "70 €"
+        tvMinSeleccionado.text = getString(R.string._1)
+        tvMaxSeleccionado.text = getString(R.string._70)
 
         rangeSlider.addOnChangeListener { slider, _, _ ->
             val valores = slider.values
@@ -142,7 +142,8 @@ class FiltrarFacturasFragment : Fragment() {
             requireActivity().supportFragmentManager.popBackStack()
 
         } catch (e: Exception) {
-            Toast.makeText(context, "Error al aplicar filtros: ${e.message}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context,
+                getString(R.string.error_al_aplicar_filtros, e.message), Toast.LENGTH_SHORT).show()
         }
     }
 

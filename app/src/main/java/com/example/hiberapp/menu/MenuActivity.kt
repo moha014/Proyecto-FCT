@@ -11,6 +11,7 @@ import com.example.hiberapp.dataretrofit.api.ApiClient
 import com.example.hiberapp.data.local.AppDatabase
 import com.example.hiberapp.data.local.FacturaRepository
 import androidx.lifecycle.lifecycleScope
+import com.example.hiberapp.R
 import kotlinx.coroutines.launch
 
 class MenuActivity : AppCompatActivity() {
@@ -48,10 +49,9 @@ class MenuActivity : AppCompatActivity() {
             val isActive = ApiClient.useMock
             binding.btnMockToggle.alpha = if (isActive) 1.0f else 0.7f
 
-            val message = if (isActive) "Modo Mock ACTIVADO" else "Modo Mock DESACTIVADO"
+            val message = if (isActive) getString(R.string.modo_mock_activado) else getString(R.string.modo_mock_desactivado)
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 
-            // ACTUALIZAR ROOM SEGÚN EL MODO
             lifecycleScope.launch {
                 repo.refreshFacturasFromApi()
             }

@@ -107,22 +107,22 @@ class DetallesFragment : Fragment() {
             val jsonObject = JSONObject(jsonString)
 
             view?.findViewById<TextView>(R.id.tv_cau)?.text =
-                jsonObject.getString("CAU(Código Autoconsumo)")
+                jsonObject.getString(getString(R.string.cau_c_digo_autoconsumo))
 
             view?.findViewById<TextView>(R.id.tv_estado_solicitud)?.text =
-                jsonObject.getString("Estado solicitud alta autoconsumidor")
+                jsonObject.getString(getString(R.string.estado_solicitud_alta_autoconsumidor))
 
             view?.findViewById<TextView>(R.id.tv_tipo_autoconsumo)?.text =
-                jsonObject.getString("Tipo autoconsumo")
+                jsonObject.getString(getString(R.string.tipo_autoconsumo))
 
             view?.findViewById<TextView>(R.id.tv_compensacion_excedentes)?.text =
-                jsonObject.getString("Compensación de excedentes")
+                jsonObject.getString(getString(R.string.compensaci_n_de_excedentes))
 
             view?.findViewById<TextView>(R.id.tv_potencia_instalacion)?.text =
-                jsonObject.getString("Potencia de instalación")
+                jsonObject.getString(getString(R.string.potencia_de_instalaci_n))
 
         } catch (e: JSONException) {
-            Log.e("DetallesFragment", "Error al parsear JSON: ${e.message}")
+            Log.e(getString(R.string.detallesfragment), getString(R.string.error_al_parsear_json, e.message))
             e.printStackTrace()
         }
     }

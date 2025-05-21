@@ -3,4 +3,26 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="mi_instalaci_n">Mi Instalación</string>
+    <string name="error_al_actualizar_facturas">Error al actualizar facturas: %1$s</string>
+    <string name="error_al_obtener_facturas">Error al obtener facturas: %1$s</string>
+    <string name="modo_mock_activado">Modo Mock ACTIVADO</string>
+    <string name="error_al_obtener_las_facturas">Error al obtener las facturas.</string>
+    <string name="error_de_conexi_n">Error de conexión: %1$s</string>
+    <string name="error_en_fecha_inicio">Error en fecha inicio</string>
+    <string name="error_en_fecha_fin">Error en fecha fin</string>
+    <string name="no_hay_facturas_que_coincidan_con_los_filtros">No hay facturas que coincidan con los filtros</string>
+    <string name="error">Error</string>
+    <string name="cerrar">Cerrar</string>
+    <string name="error_al_aplicar_filtros">Error al aplicar filtros: %1$s</string>
+    <string name="_1">1 €</string>
+    <string name="_70">70 €</string>
+    <string name="dd_mm_yyyy">dd/MM/yyyy</string>
+    <string name="modo_mock_desactivado">Modo Mock DESACTIVADO</string>
+    <string name="cau_c_digo_autoconsumo">CAU(Código Autoconsumo)</string>
+    <string name="estado_solicitud_alta_autoconsumidor">Estado solicitud alta autoconsumidor</string>
+    <string name="tipo_autoconsumo">Tipo autoconsumo</string>
+    <string name="compensaci_n_de_excedentes">Compensación de excedentes</string>
+    <string name="potencia_de_instalaci_n">Potencia de instalación</string>
+    <string name="error_al_parsear_json">Error al parsear JSON: %1$s</string>
+    <string name="detallesfragment">DetallesFragment</string>
 </resources>
