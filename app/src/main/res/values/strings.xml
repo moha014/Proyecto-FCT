@@ -25,4 +25,12 @@
     <string name="potencia_de_instalaci_n">Potencia de instalación</string>
     <string name="error_al_parsear_json">Error al parsear JSON: %1$s</string>
     <string name="detallesfragment">DetallesFragment</string>
+    <string name="smart_solar">☀️ Smart Solar</string>
+    <string name="alternar_mock">🔄 Alternar Mock</string>
+    <string name="facturas">📋 Facturas</string>
+    <string name="atr_s">Atrás</string>
+    <string name="smart_solar2">Smart Solar</string>
+    <string name="ruta_no_soportada">Ruta no soportada: %1$s</string>
+    <string name="energ_a">Energía</string>
+    <string name="detalles">Detalles</string>
 </resources>

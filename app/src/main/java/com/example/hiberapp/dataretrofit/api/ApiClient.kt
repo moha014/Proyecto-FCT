@@ -22,7 +22,8 @@ object ApiClient {
 
     fun enableMock(context: Context) {
         useMock = !useMock
-        val mensaje = if (useMock) context.getString(R.string.modo_mock_activado) else "Modo Mock DESACTIVADO"
+        val mensaje =
+            if (useMock) context.getString(R.string.modo_mock_activado) else context.getString(R.string.modo_mock_desactivado)
         Toast.makeText(context, mensaje, Toast.LENGTH_SHORT).show()
     }
 
@@ -34,7 +35,11 @@ object ApiClient {
                     val archivo = when {
                         path.contains("facturas") -> "facturas_mock.json"
                         path.contains("detalles") -> "detalles.json"
-                        else -> throw IllegalArgumentException("Ruta no soportada: $path")
+                        else -> throw IllegalArgumentException(
+                            context.getString(
+                                R.string.ruta_no_soportada,
+                                path
+                            ))
                     }
                     context.assets.open(archivo)
                 }

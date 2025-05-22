@@ -1,4 +1,3 @@
-
 package com.example.hiberapp
 
 import android.os.Bundle
@@ -15,51 +14,66 @@ import com.example.hiberapp.smartSolar.Fragments.MiInstalacionFragment
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
+// Activity para mostrar información de Smart Solar con pestañas
 class SmartSolarActivity : AppCompatActivity() {
 
+    // Variables para el ViewPager (deslizar entre pestañas) y TabLayout (pestañas superiores)
     private lateinit var viewPager: ViewPager2
     private lateinit var tabLayout: TabLayout
 
+    // Método que se ejecuta cuando se crea la activity
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_smart_solar)
 
-        // Botón de volver (flecha e "Atrás")
+        // Configuramos el botón de volver (flecha hacia atrás)
         findViewById<ImageView>(R.id.backArrow).setOnClickListener {
-            finish() // <-- Aquí se soluciona el problema
+            finish() // Cierra esta activity y vuelve a la anterior
         }
 
+        // También el texto "Volver" funciona igual que la flecha
         findViewById<TextView>(R.id.TextBack).setOnClickListener {
             finish()
         }
 
-        // Configuración de ViewPager y TabLayout
+        // Conectamos el ViewPager y TabLayout con sus elementos del layout
         viewPager = findViewById(R.id.viewPager)
         tabLayout = findViewById(R.id.tabLayout)
+
+        // Asignamos el adaptador al ViewPager
         viewPager.adapter = ViewPagerAdapter(this)
 
+        // Conectamos las pestañas con el ViewPager
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            // Asignamos nombres a cada pestaña según su posición
             tab.text = when (position) {
-                0 -> getString(R.string.mi_instalaci_n)
-                1 -> "Energía"
-                2 -> "Detalles"
+                0 -> getString(R.string.mi_instalaci_n) // Primera pestaña: "Mi instalación"
+                1 -> getString(R.string.energ_a)        // Segunda pestaña: "Energía"
+                2 -> getString(R.string.detalles)       // Tercera pestaña: "Detalles"
                 else -> ""
             }
-        }.attach()
+        }.attach() // Conectamos todo
     }
 
-    // Adaptador del ViewPager
+    // Adaptador que maneja qué fragment mostrar en cada pestaña
     private inner class ViewPagerAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
+
+        // Método que dice cuántas pestañas hay en total
         override fun getItemCount(): Int = 3
 
+        // Método que crea el fragment correspondiente a cada posición
         override fun createFragment(position: Int): Fragment {
             return when (position) {
-                0 -> MiInstalacionFragment()
-                1 -> EnergiaFragment()
+                0 -> MiInstalacionFragment() // Primera pestaña
+                1 -> EnergiaFragment()        // Segunda pestaña
                 2 -> {
+                    // Tercera pestaña - DetallesFragment con datos JSON
                     val fragment = DetallesFragment()
+
+                    // Creamos un Bundle con información de la instalación solar
                     val bundle = Bundle().apply {
-                        putString("jsonData", """
+                        putString(
+                            "jsonData", """
                             {
                                 "CAU(Código Autoconsumo)": "ES0021000000001994LJ1FA000",
                                 "Estado solicitud alta autoconsumidor": "No hemos recibido ninguna solicitud de autoconsumo",
@@ -67,12 +81,14 @@ class SmartSolarActivity : AppCompatActivity() {
                                 "Compensación de excedentes": "Precio PVPC",
                                 "Potencia de instalación": "5kWp"
                             }
-                        """.trimIndent())
+                        """.trimIndent()
+                        )
                     }
+                    // Le pasamos los datos al fragment
                     fragment.arguments = bundle
                     fragment
                 }
-                else -> MiInstalacionFragment()
+                else -> MiInstalacionFragment() // Por defecto, primera pestaña
             }
         }
     }

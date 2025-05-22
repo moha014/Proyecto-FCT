@@ -28,15 +28,18 @@ import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import android.graphics.Color
 
+// Fragment principal que muestra la lista de facturas y gráficas
 class FacturaFragment : Fragment() {
 
+    // ViewBinding para acceder a las vistas del layout
     private var _binding: FragmentFacturaBinding? = null
     private val binding get() = _binding!!
 
-    private val todasLasFacturas = mutableListOf<Factura>()
-    private val facturasFiltradas = mutableListOf<Factura>()
+    // Listas para guardar las facturas
+    private val todasLasFacturas = mutableListOf<Factura>() // Todas las facturas de la API
+    private val facturasFiltradas = mutableListOf<Factura>() // Solo las que cumplen los filtros
 
-    // Variables para filtros
+    // Variables para recordar qué filtros están aplicados
     private var fechaInicioActual: String? = null
     private var fechaFinActual: String? = null
     private var montoMinimoActual: Int = 1
@@ -48,6 +51,7 @@ class FacturaFragment : Fragment() {
     private var planPagoActual: Boolean = false
     private var hayFiltrosAplicados: Boolean = false
 
+    // Método que se ejecuta para crear la vista del fragment
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -57,34 +61,38 @@ class FacturaFragment : Fragment() {
         return binding.root
     }
 
+    // Método que se ejecuta después de crear la vista
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // RecyclerView
+        // Configuramos el RecyclerView para mostrar la lista de facturas
         binding.recyclerFacturas.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerFacturas.adapter = FacturaAdapter(facturasFiltradas) {
+            // Cuando se toca una factura, mostramos un popup con información
             val popupView = LayoutInflater.from(requireContext())
                 .inflate(R.layout.informacion_estado2, null)
             val dialog = AlertDialog.Builder(requireContext())
                 .setView(popupView)
                 .create()
+            // Botón para cerrar el popup
             popupView.findViewById<View>(R.id.btnCerrar)?.setOnClickListener {
                 dialog.dismiss()
             }
             dialog.show()
         }
 
-        setupToolbar()
+        setupToolbar() // Configuramos los botones de la barra superior
 
-        // Cargar datos
+        // Mostramos indicador de carga y pedimos las facturas al servidor
         mostrarCargando(true)
         obtenerFacturas()
 
-        // Escuchar filtros aplicados desde FiltrarFacturasFragment
+        // Escuchamos cuando llegan filtros desde el fragment de filtros
         parentFragmentManager.setFragmentResultListener(
             "filtrosFacturas",
             viewLifecycleOwner
         ) { _, bundle ->
+            // Aplicamos los filtros que nos enviaron
             aplicarFiltros(
                 fechaInicio = bundle.getString("fechaInicio"),
                 fechaFin = bundle.getString("fechaFin"),
@@ -98,18 +106,23 @@ class FacturaFragment : Fragment() {
             )
         }
 
+        // Cuando cambian el switch, actualizamos la gráfica
         binding.switchChart.setOnCheckedChangeListener { _, _ ->
             actualizarGrafica()
         }
     }
 
+    // Configuramos los botones de la barra superior
     private fun setupToolbar() {
+        // Botón para volver atrás
         binding.backArrow.setOnClickListener {
             requireActivity().onBackPressed()
         }
+        // Otro botón para volver atrás
         binding.consumoBack.setOnClickListener {
             requireActivity().onBackPressed()
         }
+        // Botón para abrir los filtros
         binding.ivFilter.setOnClickListener {
             val filtrarFragment = FiltrarFacturasFragment.newInstance()
             requireActivity().supportFragmentManager.beginTransaction()
@@ -119,32 +132,39 @@ class FacturaFragment : Fragment() {
         }
     }
 
+    // Muestra u oculta el indicador de carga
     private fun mostrarCargando(mostrar: Boolean) {
         binding.loadingProgressBar.visibility = if (mostrar) View.VISIBLE else View.GONE
         binding.recyclerFacturas.visibility = if (mostrar) View.GONE else View.VISIBLE
     }
 
+    // Método para pedir las facturas al servidor usando Retrofit
     private fun obtenerFacturas() {
         val apiService = ApiClient.getService(requireContext())
         val call = apiService.obtenerFacturas()
 
+        // Hacemos la petición de forma asíncrona
         call.enqueue(object : Callback<FacturaResponse> {
+            // Si la petición sale bien
             override fun onResponse(
                 call: Call<FacturaResponse>,
                 response: Response<FacturaResponse>
             ) {
-                mostrarCargando(false)
+                mostrarCargando(false) // Ocultamos el indicador de carga
 
                 if (response.isSuccessful) {
                     response.body()?.let { facturaResponse ->
+                        // Limpiamos la lista y añadimos las nuevas facturas
                         todasLasFacturas.clear()
                         facturaResponse.facturas?.let {
                             todasLasFacturas.addAll(it)
                         }
 
+                        // Si había filtros aplicados, los volvemos a aplicar
                         if (hayFiltrosAplicados) {
                             aplicarFiltrosGuardados()
                         } else {
+                            // Si no hay filtros, mostramos todas las facturas
                             facturasFiltradas.clear()
                             facturasFiltradas.addAll(todasLasFacturas)
                             binding.recyclerFacturas.adapter?.notifyDataSetChanged()
@@ -152,10 +172,12 @@ class FacturaFragment : Fragment() {
                         }
                     }
                 } else {
+                    // Si hay error en la respuesta
                     showErrorDialog(getString(R.string.error_al_obtener_las_facturas))
                 }
             }
 
+            // Si falla la conexión
             override fun onFailure(call: Call<FacturaResponse>, t: Throwable) {
                 mostrarCargando(false)
                 showErrorDialog(getString(R.string.error_de_conexi_n, t.message))
@@ -163,6 +185,7 @@ class FacturaFragment : Fragment() {
         })
     }
 
+    // Aplica los filtros que teníamos guardados anteriormente
     private fun aplicarFiltrosGuardados() {
         aplicarFiltros(
             fechaInicioActual,
@@ -177,6 +200,7 @@ class FacturaFragment : Fragment() {
         )
     }
 
+    // Método principal para filtrar las facturas según los criterios dados
     fun aplicarFiltros(
         fechaInicio: String?,
         fechaFin: String?,
@@ -188,6 +212,7 @@ class FacturaFragment : Fragment() {
         pendiente: Boolean,
         planPago: Boolean
     ) {
+        // Guardamos los filtros actuales para recordarlos
         fechaInicioActual = fechaInicio
         fechaFinActual = fechaFin
         montoMinimoActual = montoMinimo
@@ -198,6 +223,7 @@ class FacturaFragment : Fragment() {
         pendienteActual = pendiente
         planPagoActual = planPago
 
+        // Comprobamos si realmente hay filtros aplicados
         hayFiltrosAplicados = fechaInicio != null || fechaFin != null ||
                 montoMinimo > 1 || montoMaximo < 70 ||
                 pagado || anuladas || cuotaFija || pendiente || planPago
@@ -206,10 +232,11 @@ class FacturaFragment : Fragment() {
 
         facturasFiltradas.clear()
 
+        // Revisamos cada factura para ver si cumple los filtros
         for (factura in todasLasFacturas) {
             var cumpleFiltros = true
 
-            // Fecha inicio
+            // Filtro por fecha de inicio
             if (!fechaInicio.isNullOrEmpty()) {
                 try {
                     val formato = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
@@ -217,12 +244,14 @@ class FacturaFragment : Fragment() {
                     val fechaFactura = formato.parse(factura.fecha)
                     if (fechaFactura.before(inicio)) cumpleFiltros = false
                 } catch (_: Exception) {
-                    Toast.makeText(context,
-                        getString(R.string.error_en_fecha_inicio), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        context,
+                        getString(R.string.error_en_fecha_inicio), Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
 
-            // Fecha fin
+            // Filtro por fecha final
             if (cumpleFiltros && !fechaFin.isNullOrEmpty()) {
                 try {
                     val formato = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
@@ -230,22 +259,25 @@ class FacturaFragment : Fragment() {
                     val fechaFactura = formato.parse(factura.fecha)
                     if (fechaFactura.after(fin)) cumpleFiltros = false
                 } catch (_: Exception) {
-                    Toast.makeText(context,
-                        getString(R.string.error_en_fecha_fin), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        context,
+                        getString(R.string.error_en_fecha_fin), Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
 
-            // Monto
+            // Filtro por rango de precio
             if (cumpleFiltros) {
                 try {
                     val monto = factura.importeOrdenacion.toDoubleOrNull()
-                    if (monto == null || monto < montoMinimo || monto > montoMaximo) cumpleFiltros = false
+                    if (monto == null || monto < montoMinimo || monto > montoMaximo) cumpleFiltros =
+                        false
                 } catch (_: Exception) {
-                    // Error silencioso
+                    // Si hay error al convertir el precio, ignoramos esta factura
                 }
             }
 
-            // Estado
+            // Filtro por estado de la factura
             if (cumpleFiltros && (pagado || anuladas || cuotaFija || pendiente || planPago)) {
                 val estado = factura.descEstado?.lowercase(Locale.getDefault()) ?: ""
                 val coincide = (pagado && estado.contains("pagad")) ||
@@ -256,12 +288,15 @@ class FacturaFragment : Fragment() {
                 if (!coincide) cumpleFiltros = false
             }
 
+            // Si la factura cumple todos los filtros, la añadimos a la lista filtrada
             if (cumpleFiltros) facturasFiltradas.add(factura)
         }
 
+        // Actualizamos la lista y la gráfica
         binding.recyclerFacturas.adapter?.notifyDataSetChanged()
         actualizarGrafica()
 
+        // Si no hay resultados, avisamos al usuario
         if (facturasFiltradas.isEmpty()) {
             Toast.makeText(
                 requireContext(),
@@ -271,10 +306,11 @@ class FacturaFragment : Fragment() {
         }
     }
 
+    // Actualiza la gráfica según el tipo seleccionado (barras o líneas)
     private fun actualizarGrafica() {
         val isBar = binding.switchChart.isChecked
 
-        // Fechas para el eje X
+        // Preparamos las fechas para el eje X de la gráfica
         val fechas = facturasFiltradas.map { factura ->
             try {
                 val inputFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
@@ -286,11 +322,12 @@ class FacturaFragment : Fragment() {
         }
 
         if (isBar) {
-            // Mostrar solo el BarChart
+            // Mostrar gráfico de barras
             binding.barChart.visibility = View.VISIBLE
             binding.lineChart.visibility = View.GONE
 
             val chart = binding.barChart
+            // Creamos entradas para el gráfico de barras
             val entriesPonta = facturasFiltradas.mapIndexedNotNull { index, factura ->
                 factura.importeOrdenacion.toFloatOrNull()?.let { importe ->
                     BarEntry(index.toFloat(), floatArrayOf(importe * 0.7f, importe * 0.3f))
@@ -305,6 +342,7 @@ class FacturaFragment : Fragment() {
             } else {
                 chart.clear()
             }
+            // Configuramos cómo se muestran las fechas en el eje X
             chart.xAxis.valueFormatter = object : ValueFormatter() {
                 override fun getFormattedValue(value: Float): String {
                     val index = value.toInt()
@@ -318,13 +356,14 @@ class FacturaFragment : Fragment() {
             chart.axisRight.isEnabled = false
             chart.legend.isEnabled = true
             chart.description.isEnabled = false
-            chart.invalidate()
+            chart.invalidate() // Redibujamos el gráfico
         } else {
-            // Mostrar solo el LineChart
+            // Mostrar gráfico de líneas
             binding.barChart.visibility = View.GONE
             binding.lineChart.visibility = View.VISIBLE
 
             val chart = binding.lineChart
+            // Creamos entradas para el gráfico de líneas
             val entries = facturasFiltradas.mapIndexedNotNull { index, factura ->
                 factura.importeOrdenacion.toFloatOrNull()?.let { importe ->
                     Entry(index.toFloat(), importe)
@@ -345,6 +384,7 @@ class FacturaFragment : Fragment() {
             } else {
                 chart.clear()
             }
+            // Configuramos las fechas igual que en el gráfico anterior
             chart.xAxis.valueFormatter = object : ValueFormatter() {
                 override fun getFormattedValue(value: Float): String {
                     val index = value.toInt()
@@ -362,6 +402,7 @@ class FacturaFragment : Fragment() {
         }
     }
 
+    // Muestra un diálogo de error al usuario
     private fun showErrorDialog(message: String) {
         AlertDialog.Builder(requireContext())
             .setTitle(getString(R.string.error))
@@ -370,6 +411,7 @@ class FacturaFragment : Fragment() {
             .show()
     }
 
+    // Se ejecuta cuando se destruye la vista para evitar memory leaks
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

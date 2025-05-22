@@ -14,8 +14,10 @@ import com.google.android.material.slider.RangeSlider
 import java.text.SimpleDateFormat
 import java.util.*
 
+// Fragment para configurar los filtros de las facturas
 class FiltrarFacturasFragment : Fragment() {
 
+    // Variables para acceder a los elementos de la interfaz
     private lateinit var etFechaInicio: EditText
     private lateinit var etFechaFinal: EditText
     private lateinit var rangeSlider: RangeSlider
@@ -27,6 +29,7 @@ class FiltrarFacturasFragment : Fragment() {
     private lateinit var cbPendiente: CheckBox
     private lateinit var cbPlanPago: CheckBox
 
+    // Método que infla el layout del fragment
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -34,52 +37,56 @@ class FiltrarFacturasFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_filtrar_facturas, container, false)
     }
 
+    // Método que se ejecuta después de crear la vista
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Conectamos las variables con los elementos de la interfaz
         etFechaInicio = view.findViewById(R.id.etFechaInicio)
         etFechaFinal = view.findViewById(R.id.etFechaFinal)
         rangeSlider = view.findViewById(R.id.rangeSlider)
         tvMinSeleccionado = view.findViewById(R.id.tvMinSeleccionado)
         tvMaxSeleccionado = view.findViewById(R.id.tvMaxSeleccionado)
 
-        // Inicializar checkboxes
+        // Conectamos los checkboxes para los diferentes estados
         cbPagado = view.findViewById(R.id.cbPagado)
         cbAnuladas = view.findViewById(R.id.cbAnuladas)
         cbCuotaFija = view.findViewById(R.id.cbCuotaFija)
         cbPendiente = view.findViewById(R.id.cbPendiente)
         cbPlanPago = view.findViewById(R.id.cbPlanPago)
 
-        setupDatePickers()
-        setupRangeSlider()
+        setupDatePickers() // Configuramos los selectores de fecha
+        setupRangeSlider() // Configuramos el slider de rango de precios
 
-        // Botón para cerrar fragment
+        // Botón para cerrar este fragment y volver al anterior
         view.findViewById<ImageView>(R.id.ivCerrar).setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
         }
 
-        // Botón para aplicar los filtros
+        // Botón para aplicar los filtros seleccionados
         view.findViewById<Button>(R.id.btnAplicar).setOnClickListener {
             aplicarFiltros()
         }
 
-        // Botón para borrar los filtros
+        // Botón para limpiar todos los filtros
         view.findViewById<Button>(R.id.btnEliminarFiltros).setOnClickListener {
             limpiarFiltros()
         }
     }
 
-    // Muestra un calendario desplegable
+    // Configura los selectores de fecha (calendario desplegable)
     private fun setupDatePickers() {
         val calendar = Calendar.getInstance()
         val formatter = SimpleDateFormat(getString(R.string.dd_mm_yyyy), Locale.getDefault())
 
+        // Función que muestra el calendario cuando tocas un campo de fecha
         val showDateDialog: (EditText) -> Unit = { editText ->
-            // Usamos un tema personalizado para el DatePickerDialog
+            // Creamos un DatePickerDialog con tema verde personalizado
             val datePickerDialog = DatePickerDialog(
                 requireContext(),
                 R.style.GreenDatePickerTheme,
                 { _, year, month, day ->
+                    // Cuando el usuario selecciona una fecha, la ponemos en el EditText
                     calendar.set(year, month, day)
                     editText.setText(formatter.format(calendar.time))
                 },
@@ -91,18 +98,22 @@ class FiltrarFacturasFragment : Fragment() {
             datePickerDialog.show()
         }
 
+        // Asignamos el evento de click a cada campo de fecha
         etFechaInicio.setOnClickListener { showDateDialog(etFechaInicio) }
         etFechaFinal.setOnClickListener { showDateDialog(etFechaFinal) }
     }
 
-
+    // Configura el slider para seleccionar rango de precios
     private fun setupRangeSlider() {
+        // Establecemos los valores inicial y final del slider (1€ a 70€)
         rangeSlider.setValues(1f, 70f)
-        rangeSlider.stepSize = 1f
+        rangeSlider.stepSize = 1f // Se mueve de 1 en 1
 
+        // Mostramos los valores iniciales en los textos
         tvMinSeleccionado.text = getString(R.string._1)
         tvMaxSeleccionado.text = getString(R.string._70)
 
+        // Cuando el usuario mueve el slider, actualizamos los textos
         rangeSlider.addOnChangeListener { slider, _, _ ->
             val valores = slider.values
             val minValor = valores[0].toInt()
@@ -112,17 +123,19 @@ class FiltrarFacturasFragment : Fragment() {
         }
     }
 
-
-
-
+    // Método que recoge todos los filtros y los envía al fragment principal
     private fun aplicarFiltros() {
         try {
+            // Recogemos los valores de fecha (si están vacíos, los ponemos como null)
             val fechaInicio = etFechaInicio.text.toString().ifEmpty { null }
             val fechaFin = etFechaFinal.text.toString().ifEmpty { null }
+
+            // Recogemos los valores del slider de precio
             val valores = rangeSlider.values
             val montoMinimo = valores[0].toInt()
             val montoMaximo = valores[1].toInt()
 
+            // Creamos un Bundle con todos los filtros seleccionados
             val bundle = Bundle().apply {
                 putString("fechaInicio", fechaInicio)
                 putString("fechaFin", fechaFin)
@@ -135,25 +148,28 @@ class FiltrarFacturasFragment : Fragment() {
                 putBoolean("planPago", cbPlanPago.isChecked)
             }
 
-            // Enviamos los datos al fragment receptor
+            // Enviamos los filtros al fragment principal usando FragmentResult
             parentFragmentManager.setFragmentResult("filtrosFacturas", bundle)
 
-            // Cerramos el fragmento
+            // Cerramos este fragment para volver al anterior
             requireActivity().supportFragmentManager.popBackStack()
 
         } catch (e: Exception) {
-            Toast.makeText(context,
-                getString(R.string.error_al_aplicar_filtros, e.message), Toast.LENGTH_SHORT).show()
+            // Si hay algún error, mostramos un mensaje al usuario
+            Toast.makeText(
+                context,
+                getString(R.string.error_al_aplicar_filtros, e.message), Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
-
-
+    // Método para limpiar todos los filtros y volver a los valores por defecto
     private fun limpiarFiltros() {
-        etFechaInicio.setText("")
-        etFechaFinal.setText("")
-        rangeSlider.setValues(1f, 70f)
+        etFechaInicio.setText("") // Limpiamos fecha inicio
+        etFechaFinal.setText("") // Limpiamos fecha fin
+        rangeSlider.setValues(1f, 70f) // Volvemos el slider a los valores iniciales
 
+        // Desmarcamos todos los checkboxes
         cbPagado.isChecked = false
         cbAnuladas.isChecked = false
         cbCuotaFija.isChecked = false
@@ -161,6 +177,7 @@ class FiltrarFacturasFragment : Fragment() {
         cbPlanPago.isChecked = false
     }
 
+    // Companion object para crear nuevas instancias del fragment
     companion object {
         fun newInstance() = FiltrarFacturasFragment()
     }
