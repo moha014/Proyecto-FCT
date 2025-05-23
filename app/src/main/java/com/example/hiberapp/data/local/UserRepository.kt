@@ -3,7 +3,6 @@ package com.example.hiberapp.data.local
 import android.content.Context
 import com.example.hiberapp.dataretrofit.api.ApiClient
 import com.example.hiberapp.dataretrofit.api.ApiService
-import com.example.hiberapp.data.local.UserEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

@@ -5,7 +5,6 @@ import com.example.hiberapp.R
 import com.example.hiberapp.dataretrofit.api.ApiClient
 import com.example.hiberapp.dataretrofit.api.ApiService
 import com.example.hiberapp.domain.factura.Factura
-import com.example.hiberapp.data.local.FacturaEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
