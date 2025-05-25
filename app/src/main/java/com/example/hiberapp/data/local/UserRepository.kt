@@ -9,7 +9,7 @@ import kotlinx.coroutines.withContext
 // Repositorio para manejar los datos de usuarios tanto desde API como desde datos mock
 class UserRepository(private val context: Context, private val userDao: UserDao) {
 
-    // Método para obtener usuarios según el modo activo (mock o API real)
+    // Metodo para obtener usuarios según el modo activo (mock o API real)
     suspend fun getUsers(): List<UserEntity> = withContext(Dispatchers.IO) {
         if (ApiClient.useMock) {
             // Si está activado el modo mock, obtenemos usuarios de la base de datos local
@@ -34,7 +34,7 @@ class UserRepository(private val context: Context, private val userDao: UserDao)
         }
     }
 
-    // Método para establecer datos mock de usuarios
+    // Metodo para establecer datos mock de usuarios
     suspend fun setMockData(mockUsers: List<UserEntity>) = withContext(Dispatchers.IO) {
         // Limpiamos todos los usuarios existentes
         userDao.clearAll()

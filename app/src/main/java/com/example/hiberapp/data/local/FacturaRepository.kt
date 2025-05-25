@@ -13,7 +13,7 @@ import kotlinx.coroutines.withContext
 // Repositorio que maneja los datos de facturas desde la API y base de datos local
 class FacturaRepository(private val context: Context, private val facturaDao: FacturaDao) {
 
-    // Método para actualizar las facturas desde la API y guardarlas en Room
+    // Metodo para actualizar las facturas desde la API y guardarlas en Room
     suspend fun refreshFacturasFromApi() = withContext(Dispatchers.IO) {
         try {
             // Obtenemos el servicio de la API
@@ -24,10 +24,6 @@ class FacturaRepository(private val context: Context, private val facturaDao: Fa
             // Comprobamos si la respuesta fue exitosa
             if (!response.isSuccessful) {
                 throw Exception(
-                    context.getString(
-                        R.string.error_al_obtener_facturas,
-                        response.code()
-                    )
                 )
             }
 
@@ -49,7 +45,7 @@ class FacturaRepository(private val context: Context, private val facturaDao: Fa
         }
     }
 
-    // Método para obtener las facturas desde la base de datos local
+    // Metodo para obtener las facturas desde la base de datos local
     fun getFacturas(): Flow<List<Factura>> {
         return facturaDao.getAllFacturas().map { entities ->
             // Convertimos las entidades de Room a objetos del dominio

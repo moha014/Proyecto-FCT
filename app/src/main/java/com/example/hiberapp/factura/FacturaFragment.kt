@@ -51,7 +51,7 @@ class FacturaFragment : Fragment() {
     private var planPagoActual: Boolean = false
     private var hayFiltrosAplicados: Boolean = false
 
-    // Método que se ejecuta para crear la vista del fragment
+    // Metodo que se ejecuta para crear la vista del fragment
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -61,7 +61,7 @@ class FacturaFragment : Fragment() {
         return binding.root
     }
 
-    // Método que se ejecuta después de crear la vista
+    // Metodo que se ejecuta después de crear la vista
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -138,7 +138,7 @@ class FacturaFragment : Fragment() {
         binding.recyclerFacturas.visibility = if (mostrar) View.GONE else View.VISIBLE
     }
 
-    // Método para pedir las facturas al servidor usando Retrofit
+    // Metodo para pedir las facturas al servidor usando Retrofit
     private fun obtenerFacturas() {
         val apiService = ApiClient.getService(requireContext())
         val call = apiService.obtenerFacturas()
@@ -200,7 +200,7 @@ class FacturaFragment : Fragment() {
         )
     }
 
-    // Método principal para filtrar las facturas según los criterios dados
+    // Metodo principal para filtrar las facturas según los criterios dados
     fun aplicarFiltros(
         fechaInicio: String?,
         fechaFin: String?,

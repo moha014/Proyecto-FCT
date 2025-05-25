@@ -21,7 +21,7 @@ class SmartSolarActivity : AppCompatActivity() {
     private lateinit var viewPager: ViewPager2
     private lateinit var tabLayout: TabLayout
 
-    // Método que se ejecuta cuando se crea la activity
+    // Metodo que se ejecuta cuando se crea la activity
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_smart_solar)
@@ -52,16 +52,16 @@ class SmartSolarActivity : AppCompatActivity() {
                 2 -> getString(R.string.detalles)       // Tercera pestaña: "Detalles"
                 else -> ""
             }
-        }.attach() // Conectamos todo
+        }.attach()
     }
 
     // Adaptador que maneja qué fragment mostrar en cada pestaña
     private inner class ViewPagerAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
 
-        // Método que dice cuántas pestañas hay en total
+        // Metodo que dice cuántas pestañas hay en total
         override fun getItemCount(): Int = 3
 
-        // Método que crea el fragment correspondiente a cada posición
+        // Metodo que crea el fragment correspondiente a cada posición
         override fun createFragment(position: Int): Fragment {
             return when (position) {
                 0 -> MiInstalacionFragment() // Primera pestaña

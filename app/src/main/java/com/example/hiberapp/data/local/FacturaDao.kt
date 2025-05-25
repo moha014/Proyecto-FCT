@@ -11,11 +11,11 @@ interface FacturaDao {
     @Query("SELECT * FROM facturas")
     fun getAllFacturas(): Flow<List<FacturaEntity>>
 
-    // Método para insertar una lista de facturas (si ya existe una, la reemplaza)
+    // Metodo para insertar una lista de facturas (si ya existe una, la reemplaza)
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertFacturas(facturas: List<FacturaEntity>)
 
-    // Método para borrar todas las facturas de la tabla
+    // Metodo para borrar todas las facturas de la tabla
     @Query("DELETE FROM facturas")
     suspend fun clearAll()
 }

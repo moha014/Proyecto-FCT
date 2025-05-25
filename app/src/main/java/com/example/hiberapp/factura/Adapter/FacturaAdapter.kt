@@ -16,27 +16,27 @@ class FacturaAdapter(
     private val onItemClick: () -> Unit
 ) : RecyclerView.Adapter<FacturaAdapter.FacturaViewHolder>() {
 
-    // Método que crea una nueva vista para cada elemento de la lista
+    // Metodo que crea una nueva vista para cada elemento de la lista
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FacturaViewHolder {
         // Inflamos el layout XML para cada item de factura
         val binding = ItemFacturaBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return FacturaViewHolder(binding)
     }
 
-    // Método que conecta los datos de una factura con su vista correspondiente
+    // Metodo que conecta los datos de una factura con su vista correspondiente
     override fun onBindViewHolder(holder: FacturaViewHolder, position: Int) {
         val factura = facturas[position] // Obtenemos la factura en esta posición
         holder.bind(factura, onItemClick) // Le pasamos los datos a la vista
     }
 
-    // Método que dice cuántas facturas hay en total
+    // Metodo que dice cuántas facturas hay en total
     override fun getItemCount(): Int = facturas.size
 
     // Clase que representa cada elemento individual de la lista
     class FacturaViewHolder(private val binding: ItemFacturaBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        // Método para rellenar la vista con los datos de una factura
+        // Metodo para rellenar la vista con los datos de una factura
         fun bind(factura: Factura, onItemClick: () -> Unit) {
 
             // Ponemos la fecha de la factura en el TextView correspondiente

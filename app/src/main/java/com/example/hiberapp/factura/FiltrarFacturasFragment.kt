@@ -29,7 +29,7 @@ class FiltrarFacturasFragment : Fragment() {
     private lateinit var cbPendiente: CheckBox
     private lateinit var cbPlanPago: CheckBox
 
-    // Método que infla el layout del fragment
+    // Metodo que infla el layout del fragment
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -37,7 +37,7 @@ class FiltrarFacturasFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_filtrar_facturas, container, false)
     }
 
-    // Método que se ejecuta después de crear la vista
+    // Metodo que se ejecuta después de crear la vista
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -123,7 +123,7 @@ class FiltrarFacturasFragment : Fragment() {
         }
     }
 
-    // Método que recoge todos los filtros y los envía al fragment principal
+    // Metodo que recoge todos los filtros y los envía al fragment principal
     private fun aplicarFiltros() {
         try {
             // Recogemos los valores de fecha (si están vacíos, los ponemos como null)
@@ -163,7 +163,7 @@ class FiltrarFacturasFragment : Fragment() {
         }
     }
 
-    // Método para limpiar todos los filtros y volver a los valores por defecto
+    // Metodo para limpiar todos los filtros y volver a los valores por defecto
     private fun limpiarFiltros() {
         etFechaInicio.setText("") // Limpiamos fecha inicio
         etFechaFinal.setText("") // Limpiamos fecha fin

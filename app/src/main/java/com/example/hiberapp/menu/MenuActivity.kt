@@ -20,7 +20,7 @@ class MenuActivity : AppCompatActivity() {
     // ViewBinding para acceder a los elementos de la interfaz
     private lateinit var binding: ActivityMenuBinding
 
-    // Método que se ejecuta cuando se crea la activity
+    // Metodo que se ejecuta cuando se crea la activity
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
