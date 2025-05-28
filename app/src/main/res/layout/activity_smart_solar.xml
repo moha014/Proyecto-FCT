@@ -10,6 +10,7 @@
     <!-- Toolbar con botón de atrás clicable -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#FFFFFF"
@@ -22,9 +23,9 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:layout_marginTop="15dp"
+            android:layout_height="40dp"
+            android:padding="5dp"
+            android:layout_marginTop="30dp"
             android:orientation="horizontal"
             android:gravity="center_vertical">
 
@@ -32,7 +33,7 @@
                 android:id="@+id/backArrow"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:padding="8dp"
+                android:padding="9dp"
                 android:src="@drawable/ic_arrow_back"
                 app:tint="#8BC34A" />
 

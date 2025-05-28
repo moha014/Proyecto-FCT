@@ -27,6 +27,7 @@ import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import android.graphics.Color
+import com.google.android.material.snackbar.Snackbar
 
 // Fragment principal que muestra la lista de facturas y gráficas
 class FacturaFragment : Fragment() {
@@ -93,17 +94,7 @@ class FacturaFragment : Fragment() {
             viewLifecycleOwner
         ) { _, bundle ->
             // Aplicamos los filtros que nos enviaron
-            aplicarFiltros(
-                fechaInicio = bundle.getString("fechaInicio"),
-                fechaFin = bundle.getString("fechaFin"),
-                montoMinimo = bundle.getInt("montoMinimo", 1),
-                montoMaximo = bundle.getInt("montoMaximo", 70),
-                pagado = bundle.getBoolean("pagado"),
-                anuladas = bundle.getBoolean("anuladas"),
-                cuotaFija = bundle.getBoolean("cuotaFija"),
-                pendiente = bundle.getBoolean("pendiente"),
-                planPago = bundle.getBoolean("planPago")
-            )
+            aplicarFiltros(bundle)
         }
 
         // Cuando cambian el switch, actualizamos la gráfica
@@ -134,12 +125,15 @@ class FacturaFragment : Fragment() {
 
     // Muestra u oculta el indicador de carga
     private fun mostrarCargando(mostrar: Boolean) {
+        if (!isAdded) return // Verificamos si el fragment está adjunto a la actividad
         binding.loadingProgressBar.visibility = if (mostrar) View.VISIBLE else View.GONE
         binding.recyclerFacturas.visibility = if (mostrar) View.GONE else View.VISIBLE
     }
 
     // Metodo para pedir las facturas al servidor usando Retrofit
     private fun obtenerFacturas() {
+        if (!isAdded) return // Verificamos si el fragment está adjunto a la actividad
+
         val apiService = ApiClient.getService(requireContext())
         val call = apiService.obtenerFacturas()
 
@@ -150,6 +144,7 @@ class FacturaFragment : Fragment() {
                 call: Call<FacturaResponse>,
                 response: Response<FacturaResponse>
             ) {
+                if (!isAdded) return // Verificamos si el fragment está adjunto a la actividad
                 mostrarCargando(false) // Ocultamos el indicador de carga
 
                 if (response.isSuccessful) {
@@ -179,6 +174,7 @@ class FacturaFragment : Fragment() {
 
             // Si falla la conexión
             override fun onFailure(call: Call<FacturaResponse>, t: Throwable) {
+                if (!isAdded) return // Verificamos si el fragment está adjunto a la actividad
                 mostrarCargando(false)
                 showErrorDialog(getString(R.string.error_de_conexi_n, t.message))
             }
@@ -187,121 +183,110 @@ class FacturaFragment : Fragment() {
 
     // Aplica los filtros que teníamos guardados anteriormente
     private fun aplicarFiltrosGuardados() {
-        aplicarFiltros(
-            fechaInicioActual,
-            fechaFinActual,
-            montoMinimoActual,
-            montoMaximoActual,
-            pagadoActual,
-            anuladasActual,
-            cuotaFijaActual,
-            pendienteActual,
-            planPagoActual
-        )
+        val bundle = Bundle().apply {
+            putString("fechaInicio", fechaInicioActual)
+            putString("fechaFin", fechaFinActual)
+            putInt("montoMinimo", montoMinimoActual)
+            putInt("montoMaximo", montoMaximoActual)
+            putBoolean("pagado", pagadoActual)
+            putBoolean("anuladas", anuladasActual)
+            putBoolean("cuotaFija", cuotaFijaActual)
+            putBoolean("pendiente", pendienteActual)
+            putBoolean("planPago", planPagoActual)
+        }
+        aplicarFiltros(bundle)
     }
 
     // Metodo principal para filtrar las facturas según los criterios dados
-    fun aplicarFiltros(
-        fechaInicio: String?,
-        fechaFin: String?,
-        montoMinimo: Int,
-        montoMaximo: Int,
-        pagado: Boolean,
-        anuladas: Boolean,
-        cuotaFija: Boolean,
-        pendiente: Boolean,
-        planPago: Boolean
-    ) {
-        // Guardamos los filtros actuales para recordarlos
-        fechaInicioActual = fechaInicio
-        fechaFinActual = fechaFin
-        montoMinimoActual = montoMinimo
-        montoMaximoActual = montoMaximo
-        pagadoActual = pagado
-        anuladasActual = anuladas
-        cuotaFijaActual = cuotaFija
-        pendienteActual = pendiente
-        planPagoActual = planPago
+    private fun aplicarFiltros(bundle: Bundle) {
+        try {
+            // Recogemos los valores de los filtros
+            val fechaInicio = bundle.getString("fechaInicio")
+            val fechaFin = bundle.getString("fechaFin")
+            val montoMinimo = bundle.getInt("montoMinimo")
+            val montoMaximo = bundle.getInt("montoMaximo")
+            val pagado = bundle.getBoolean("pagado")
+            val anuladas = bundle.getBoolean("anuladas")
+            val cuotaFija = bundle.getBoolean("cuotaFija")
+            val pendiente = bundle.getBoolean("pendiente")
+            val planPago = bundle.getBoolean("planPago")
 
-        // Comprobamos si realmente hay filtros aplicados
-        hayFiltrosAplicados = fechaInicio != null || fechaFin != null ||
-                montoMinimo > 1 || montoMaximo < 70 ||
-                pagado || anuladas || cuotaFija || pendiente || planPago
+            // Guardamos los filtros actuales
+            fechaInicioActual = fechaInicio
+            fechaFinActual = fechaFin
+            montoMinimoActual = montoMinimo
+            montoMaximoActual = montoMaximo
+            pagadoActual = pagado
+            anuladasActual = anuladas
+            cuotaFijaActual = cuotaFija
+            pendienteActual = pendiente
+            planPagoActual = planPago
 
-        if (todasLasFacturas.isEmpty()) return
+            // Comprobamos si realmente hay filtros aplicados
+            hayFiltrosAplicados = fechaInicio != null || fechaFin != null ||
+                    montoMinimo > 1 || montoMaximo < 70 ||
+                    pagado || anuladas || cuotaFija || pendiente || planPago
 
-        facturasFiltradas.clear()
+            // Filtramos las facturas
+            val facturasFiltradasTemp = todasLasFacturas.filter { factura ->
+                var cumpleFiltros = true
 
-        // Revisamos cada factura para ver si cumple los filtros
-        for (factura in todasLasFacturas) {
-            var cumpleFiltros = true
-
-            // Filtro por fecha de inicio
-            if (!fechaInicio.isNullOrEmpty()) {
-                try {
-                    val formato = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-                    val inicio = formato.parse(fechaInicio)
-                    val fechaFactura = formato.parse(factura.fecha)
-                    if (fechaFactura.before(inicio)) cumpleFiltros = false
-                } catch (_: Exception) {
-                    Toast.makeText(
-                        context,
-                        getString(R.string.error_en_fecha_inicio), Toast.LENGTH_SHORT
-                    ).show()
+                // Filtro por fecha
+                if (fechaInicio != null && fechaFin != null) {
+                    try {
+                        val formatoEntrada = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                        val formatoFactura = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
+                        
+                        val fechaInicioDate = formatoEntrada.parse(fechaInicio)
+                        val fechaFinDate = formatoEntrada.parse(fechaFin)
+                        val fechaFactura = formatoFactura.parse(factura.fecha)
+                        
+                        if (fechaFactura != null && fechaInicioDate != null && fechaFinDate != null) {
+                            cumpleFiltros = cumpleFiltros && fechaFactura in fechaInicioDate..fechaFinDate
+                        }
+                    } catch (e: Exception) {
+                        cumpleFiltros = false
+                    }
                 }
+
+                // Filtro por monto
+                val montoFactura = factura.importeOrdenacion.toDoubleOrNull()
+                cumpleFiltros = cumpleFiltros && (montoFactura != null && montoFactura in montoMinimo.toDouble()..montoMaximo.toDouble())
+
+                // Filtro por estado
+                if (pagado) cumpleFiltros = cumpleFiltros && factura.descEstado?.lowercase(Locale.getDefault())?.contains("pagad") == true
+                if (anuladas) cumpleFiltros = cumpleFiltros && factura.descEstado?.lowercase(Locale.getDefault())?.contains("anulad") == true
+                if (cuotaFija) cumpleFiltros = cumpleFiltros && factura.descEstado?.lowercase(Locale.getDefault())?.contains("cuota") == true
+                if (pendiente) cumpleFiltros = cumpleFiltros && factura.descEstado?.lowercase(Locale.getDefault())?.contains("pendient") == true
+                if (planPago) cumpleFiltros = cumpleFiltros && factura.descEstado?.lowercase(Locale.getDefault())?.contains("plan") == true
+
+                cumpleFiltros
             }
 
-            // Filtro por fecha final
-            if (cumpleFiltros && !fechaFin.isNullOrEmpty()) {
-                try {
-                    val formato = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-                    val fin = formato.parse(fechaFin)
-                    val fechaFactura = formato.parse(factura.fecha)
-                    if (fechaFactura.after(fin)) cumpleFiltros = false
-                } catch (_: Exception) {
-                    Toast.makeText(
-                        context,
-                        getString(R.string.error_en_fecha_fin), Toast.LENGTH_SHORT
-                    ).show()
-                }
+            // Actualizamos la lista con las facturas filtradas
+            facturasFiltradas.clear()
+            facturasFiltradas.addAll(facturasFiltradasTemp)
+            binding.recyclerFacturas.adapter?.notifyDataSetChanged()
+            actualizarGrafica()
+
+            // Mostramos mensaje con el número de facturas encontradas
+            val mensaje = if (facturasFiltradas.isEmpty()) {
+                getString(R.string.no_se_han_encontrado_facturas)
+            } else {
+                getString(R.string.se_han_encontrado_facturas, facturasFiltradas.size)
             }
+            
+            Snackbar.make(
+                requireView(),
+                mensaje,
+                Snackbar.LENGTH_SHORT
+            ).show()
 
-            // Filtro por rango de precio
-            if (cumpleFiltros) {
-                try {
-                    val monto = factura.importeOrdenacion.toDoubleOrNull()
-                    if (monto == null || monto < montoMinimo || monto > montoMaximo) cumpleFiltros =
-                        false
-                } catch (_: Exception) {
-                    // Si hay error al convertir el precio, ignoramos esta factura
-                }
-            }
-
-            // Filtro por estado de la factura
-            if (cumpleFiltros && (pagado || anuladas || cuotaFija || pendiente || planPago)) {
-                val estado = factura.descEstado?.lowercase(Locale.getDefault()) ?: ""
-                val coincide = (pagado && estado.contains("pagad")) ||
-                        (anuladas && estado.contains("anulad")) ||
-                        (cuotaFija && estado.contains("cuota")) ||
-                        (pendiente && estado.contains("pendient")) ||
-                        (planPago && estado.contains("plan"))
-                if (!coincide) cumpleFiltros = false
-            }
-
-            // Si la factura cumple todos los filtros, la añadimos a la lista filtrada
-            if (cumpleFiltros) facturasFiltradas.add(factura)
-        }
-
-        // Actualizamos la lista y la gráfica
-        binding.recyclerFacturas.adapter?.notifyDataSetChanged()
-        actualizarGrafica()
-
-        // Si no hay resultados, avisamos al usuario
-        if (facturasFiltradas.isEmpty()) {
-            Toast.makeText(
-                requireContext(),
-                getString(R.string.no_hay_facturas_que_coincidan_con_los_filtros),
-                Toast.LENGTH_SHORT
+        } catch (e: Exception) {
+            Snackbar.make(
+                requireView(),
+                getString(R.string.error_al_aplicar_filtros, e.message),
+                Snackbar.LENGTH_SHORT
             ).show()
         }
     }
@@ -415,5 +400,12 @@ class FacturaFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    // Se ejecuta cuando el fragment se desadjunta de la actividad
+    override fun onDetach() {
+        super.onDetach()
+        // Cancelamos cualquier operación pendiente
+        mostrarCargando(false)
     }
 }

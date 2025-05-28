@@ -6,6 +6,10 @@ import co.infinum.retromock.Retromock
 import com.example.hiberapp.R
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import com.google.android.material.snackbar.Snackbar
+import android.view.View
+import android.app.Activity
+import android.view.ViewGroup
 
 object ApiClient {
 
@@ -20,11 +24,13 @@ object ApiClient {
             .build()
     }
 
+    private var currentSnackbar: Snackbar? = null
+
     fun enableMock(context: Context) {
         useMock = !useMock
         val mensaje =
             if (useMock) context.getString(R.string.modo_mock_activado) else context.getString(R.string.modo_mock_desactivado)
-        Toast.makeText(context, mensaje, Toast.LENGTH_SHORT).show()
+        mostrarMensaje(context, mensaje)
     }
 
     fun getService(context: Context): ApiService {
@@ -48,6 +54,24 @@ object ApiClient {
             mockRetrofit.create(ApiService::class.java)
         } else {
             retrofit.create(ApiService::class.java)
+        }
+    }
+
+    fun mostrarMensaje(context: Context, mensaje: String) {
+        // Si hay un Snackbar mostrándose, lo ocultamos
+        currentSnackbar?.dismiss()
+        
+        // Buscamos una vista válida para mostrar el Snackbar
+        val activity = context as? Activity
+        val rootView = activity?.findViewById<ViewGroup>(android.R.id.content)?.getChildAt(0)
+        
+        if (rootView != null) {
+            // Creamos y mostramos el nuevo Snackbar
+            currentSnackbar = Snackbar.make(rootView, mensaje, Snackbar.LENGTH_SHORT)
+            currentSnackbar?.show()
+        } else {
+            // Si no encontramos una vista válida, usamos Toast como fallback
+            Toast.makeText(context, mensaje, Toast.LENGTH_SHORT).show()
         }
     }
 }

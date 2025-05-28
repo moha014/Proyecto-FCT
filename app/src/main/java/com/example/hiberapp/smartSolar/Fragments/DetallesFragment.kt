@@ -12,26 +12,32 @@ import androidx.fragment.app.Fragment
 import com.example.hiberapp.dataretrofit.api.ApiClient
 import com.example.hiberapp.R
 import com.example.hiberapp.dataretrofit.responses.DetallesResponse
+import com.example.hiberapp.databinding.FragmentDetallessBinding
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import com.google.android.material.snackbar.Snackbar
 
 class DetallesFragment : Fragment() {
+    private var _binding: FragmentDetallessBinding? = null
+    private val binding get() = _binding!!
+    private var currentSnackbar: Snackbar? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_detalless, container, false)
+        _binding = FragmentDetallessBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val infoIcon = view.findViewById<ImageView>(R.id.icono_info)
-        infoIcon?.setOnClickListener {
+        // Configurar el icono de información
+        binding.iconoInfo.setOnClickListener {
             mostrarDialogoInfo()
         }
 
@@ -41,6 +47,15 @@ class DetallesFragment : Fragment() {
         jsonData?.let {
             displayJsonData(it)
         }
+    }
+
+    private fun mostrarMensaje(mensaje: String) {
+        // Si hay un Snackbar mostrándose, lo ocultamos
+        currentSnackbar?.dismiss()
+        
+        // Creamos y mostramos el nuevo Snackbar
+        currentSnackbar = Snackbar.make(binding.root, mensaje, Snackbar.LENGTH_SHORT)
+        currentSnackbar?.show()
     }
 
     private fun cargarDetallesDesdeApi() {
@@ -57,21 +72,13 @@ class DetallesFragment : Fragment() {
                         val detalles = response.body()!!
                         actualizarUI(detalles)
                     } else {
-                        Toast.makeText(
-                            context,
-                            "Error al cargar los detalles: ${response.code()}",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        mostrarMensaje("Error al cargar los detalles: ${response.code()}")
                         Log.e("DetallesFragment", "Error en la respuesta: ${response.code()}")
                     }
                 }
 
                 override fun onFailure(call: Call<DetallesResponse>, t: Throwable) {
-                    Toast.makeText(
-                        context,
-                        "Error al cargar los detalles: ${t.message}",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    mostrarMensaje("Error al cargar los detalles: ${t.message}")
                     Log.e("DetallesFragment", "Error en la llamada: ${t.message}")
                 }
             })
@@ -79,12 +86,12 @@ class DetallesFragment : Fragment() {
     }
 
     private fun actualizarUI(detalles: DetallesResponse) {
-        view?.findViewById<TextView>(R.id.tv_cau)?.text = detalles.cau
-        view?.findViewById<TextView>(R.id.tv_estado_solicitud)?.text = detalles.estadoSolicitud
-        view?.findViewById<TextView>(R.id.tv_tipo_autoconsumo)?.text = detalles.tipoAutoconsumo
-        view?.findViewById<TextView>(R.id.tv_compensacion_excedentes)?.text =
+        binding.tvCau.text = detalles.cau
+        binding.tvEstadoSolicitud.text = detalles.estadoSolicitud
+        binding.tvTipoAutoconsumo.text = detalles.tipoAutoconsumo
+        binding.tvCompensacionExcedentes.text =
             detalles.compensacionExcedentes
-        view?.findViewById<TextView>(R.id.tv_potencia_instalacion)?.text =
+        binding.tvPotenciaInstalacion.text =
             detalles.potenciaInstalacion
     }
 
@@ -106,24 +113,29 @@ class DetallesFragment : Fragment() {
         try {
             val jsonObject = JSONObject(jsonString)
 
-            view?.findViewById<TextView>(R.id.tv_cau)?.text =
+            binding.tvCau.text =
                 jsonObject.getString(getString(R.string.cau_c_digo_autoconsumo))
 
-            view?.findViewById<TextView>(R.id.tv_estado_solicitud)?.text =
+            binding.tvEstadoSolicitud.text =
                 jsonObject.getString(getString(R.string.estado_solicitud_alta_autoconsumidor))
 
-            view?.findViewById<TextView>(R.id.tv_tipo_autoconsumo)?.text =
+            binding.tvTipoAutoconsumo.text =
                 jsonObject.getString(getString(R.string.tipo_autoconsumo))
 
-            view?.findViewById<TextView>(R.id.tv_compensacion_excedentes)?.text =
+            binding.tvCompensacionExcedentes.text =
                 jsonObject.getString(getString(R.string.compensaci_n_de_excedentes))
 
-            view?.findViewById<TextView>(R.id.tv_potencia_instalacion)?.text =
+            binding.tvPotenciaInstalacion.text =
                 jsonObject.getString(getString(R.string.potencia_de_instalaci_n))
 
         } catch (e: JSONException) {
             Log.e(getString(R.string.detallesfragment), getString(R.string.error_al_parsear_json, e.message))
             e.printStackTrace()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

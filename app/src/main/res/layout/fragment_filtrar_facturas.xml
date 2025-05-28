@@ -5,8 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/llContainer"
-    android:layout_marginTop="15dp"
-    android:background="@android:color/white">
+    android:background="?android:attr/colorBackground">
 
     <!-- Toolbar simplificada solo con la X -->
     <RelativeLayout
@@ -43,7 +42,7 @@
                 android:text="Filtrar facturas"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                android:textColor="@android:color/black"
+                android:textColor="?android:attr/textColorPrimary"
                 android:layout_marginBottom="24dp" />
 
             <!-- Sección de fechas -->
@@ -52,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:text="Con fecha de emisión"
                 android:textSize="16sp"
-                android:textColor="@android:color/black"
+                android:textColor="?android:attr/textColorPrimary"
                 android:layout_marginBottom="16dp" />
 
             <LinearLayout
@@ -127,7 +126,7 @@
                 android:layout_height="wrap_content"
                 android:text="Por un importe"
                 android:textSize="16sp"
-                android:textColor="@android:color/black"
+                android:textColor="?android:attr/textColorPrimary"
                 android:layout_marginBottom="16dp" />
 
             <RelativeLayout
@@ -206,7 +205,7 @@
                 android:layout_height="wrap_content"
                 android:text="Por estado"
                 android:textSize="16sp"
-                android:textColor="@android:color/black"
+                android:textColor="?android:attr/textColorPrimary"
                 android:layout_marginBottom="16dp" />
 
             <CheckBox
@@ -214,6 +213,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Pagadas"
+                android:textColor="?android:attr/textColorPrimary"
                 android:buttonTint="@android:color/holo_green_light" />
 
             <CheckBox
@@ -221,6 +221,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Anuladas"
+                android:textColor="?android:attr/textColorPrimary"
                 android:buttonTint="@android:color/holo_green_light" />
 
             <CheckBox
@@ -228,6 +229,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Cuota Fija"
+                android:textColor="?android:attr/textColorPrimary"
                 android:buttonTint="@android:color/holo_green_light" />
 
             <CheckBox
@@ -235,6 +237,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Pendientes de pago"
+                android:textColor="?android:attr/textColorPrimary"
                 android:buttonTint="@android:color/holo_green_light" />
 
             <CheckBox
@@ -242,6 +245,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Plan de pago"
+                android:textColor="?android:attr/textColorPrimary"
                 android:buttonTint="@android:color/holo_green_light" />
         </LinearLayout>
     </ScrollView>

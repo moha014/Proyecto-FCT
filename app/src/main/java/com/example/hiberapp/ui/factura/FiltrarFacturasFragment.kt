@@ -1,4 +1,4 @@
-package com.example.hiberapp.factura
+package com.example.hiberapp.ui.factura
 
 import android.app.DatePickerDialog
 import android.os.Bundle
@@ -8,13 +8,14 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
 import com.example.hiberapp.R
+import com.example.hiberapp.factura.FacturaFragment
 import com.google.android.material.slider.RangeSlider
 import com.google.android.material.snackbar.Snackbar
 import java.text.SimpleDateFormat
 import java.util.*
 
 // Fragment para configurar los filtros de las facturas
-class FiltrarFacturasFragmentOld : Fragment() {
+class FiltrarFacturasFragment : Fragment() {
 
     // Variables para acceder a los elementos de la interfaz
     private lateinit var etFechaInicio: EditText
@@ -179,6 +180,6 @@ class FiltrarFacturasFragmentOld : Fragment() {
 
     // Companion object para crear nuevas instancias del fragment
     companion object {
-        fun newInstance() = FiltrarFacturasFragmentOld()
+        fun newInstance() = FiltrarFacturasFragment()
     }
 } 

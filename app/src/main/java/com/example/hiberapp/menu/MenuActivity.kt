@@ -13,12 +13,15 @@ import com.example.hiberapp.data.local.FacturaRepository
 import androidx.lifecycle.lifecycleScope
 import com.example.hiberapp.R
 import kotlinx.coroutines.launch
+import com.google.android.material.snackbar.Snackbar
 
 // Activity principal que funciona como menú de la aplicación
 class MenuActivity : AppCompatActivity() {
 
     // ViewBinding para acceder a los elementos de la interfaz
     private lateinit var binding: ActivityMenuBinding
+    private var currentSnackbar: Snackbar? = null
+    private lateinit var repo: FacturaRepository
 
     // Metodo que se ejecuta cuando se crea la activity
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,12 +33,18 @@ class MenuActivity : AppCompatActivity() {
 
         // Inicializamos la base de datos local (Room) y el repositorio
         val db = AppDatabase.getDatabase(this)
-        val repo = FacturaRepository(this, db.facturaDao())
+        repo = FacturaRepository(this, db.facturaDao())
+        
         // Cargamos los datos desde la API de forma asíncrona
         lifecycleScope.launch {
             repo.refreshFacturasFromApi()
         }
 
+        // Configurar los botones del menú
+        setupMenuButtons()
+    }
+
+    private fun setupMenuButtons() {
         // Botón para ir a la pantalla de facturas
         binding.btnFacturas.setOnClickListener {
             // Abrimos el FacturaFragment reemplazando el contenido actual
@@ -65,12 +74,21 @@ class MenuActivity : AppCompatActivity() {
             // Mostramos un mensaje al usuario
             val message =
                 if (isActive) getString(R.string.modo_mock_activado) else getString(R.string.modo_mock_desactivado)
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+            mostrarMensaje(message)
 
             // Recargamos las facturas con el nuevo modo
             lifecycleScope.launch {
                 repo.refreshFacturasFromApi()
             }
         }
+    }
+
+    fun mostrarMensaje(message: String) {
+        // Si hay un Snackbar mostrándose, lo ocultamos
+        currentSnackbar?.dismiss()
+        
+        // Creamos y mostramos el nuevo Snackbar
+        currentSnackbar = Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
+        currentSnackbar?.show()
     }
 }
