@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
 import com.example.hiberapp.R
-import com.example.hiberapp.factura.FacturaFragment
 import com.google.android.material.slider.RangeSlider
 import com.google.android.material.snackbar.Snackbar
 import java.text.SimpleDateFormat
