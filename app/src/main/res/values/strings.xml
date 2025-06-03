@@ -35,4 +35,5 @@
     <string name="detalles">Detalles</string>
     <string name="no_se_han_encontrado_facturas">No se han encontrado facturas</string>
     <string name="se_han_encontrado_facturas">Se han encontrado %d facturas</string>
+    <string name="no_facturas_en_rango">No existen facturas en estas fechas</string>
 </resources>

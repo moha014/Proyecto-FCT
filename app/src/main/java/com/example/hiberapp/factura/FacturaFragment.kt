@@ -272,7 +272,8 @@ class FacturaFragment : Fragment() {
 
             // Mostramos mensaje con el número de facturas encontradas
             val mensaje = if (facturasFiltradas.isEmpty()) {
-                getString(R.string.no_se_han_encontrado_facturas)
+                if (fechaInicio != null && fechaFin != null) getString(R.string.no_facturas_en_rango)
+                else getString(R.string.no_se_han_encontrado_facturas)
             } else {
                 getString(R.string.se_han_encontrado_facturas, facturasFiltradas.size)
             }
