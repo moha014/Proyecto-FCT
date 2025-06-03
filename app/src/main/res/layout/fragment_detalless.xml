@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="?android:attr/colorBackground">
 
     <!-- Título CAU -->
     <TextView
@@ -11,7 +12,7 @@
         android:layout_height="wrap_content"
         android:text="CAU (Código Autoconsumo)"
         android:textSize="12sp"
-        android:textColor="#757575" />
+        android:textColor="?android:attr/textColorSecondary" />
 
     <TextView
         android:id="@+id/tv_cau"
@@ -19,7 +20,7 @@
         android:layout_height="wrap_content"
         android:text="ES0021000000001994LJ1FA000"
         android:textSize="17sp"
-        android:textColor="#000000" />
+        android:textColor="?android:attr/textColorPrimary" />
 
     <View
         android:layout_width="match_parent"
@@ -34,7 +35,7 @@
         android:layout_height="wrap_content"
         android:text="Estado solicitud alta autoconsumo"
         android:textSize="12sp"
-        android:textColor="#757575"
+        android:textColor="?android:attr/textColorSecondary"
         android:layout_marginTop="16dp" />
 
     <LinearLayout
@@ -48,7 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="No hemos recibido ninguna solicitud de autoconsumo"
-            android:textColor="#000000"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="17sp" />
 
         <ImageView
@@ -73,7 +74,7 @@
         android:layout_height="wrap_content"
         android:text="Tipo autoconsumo"
         android:textSize="12sp"
-        android:textColor="#757575"
+        android:textColor="?android:attr/textColorSecondary"
         android:layout_marginTop="16dp" />
 
     <TextView
@@ -82,7 +83,7 @@
         android:layout_height="wrap_content"
         android:text="Con excedentes y compensación Individual - Consumo"
         android:textSize="17sp"
-        android:textColor="#000000" />
+        android:textColor="?android:attr/textColorPrimary" />
 
     <View
         android:layout_width="match_parent"
@@ -97,7 +98,7 @@
         android:layout_height="wrap_content"
         android:text="Compensación de excedentes"
         android:textSize="12sp"
-        android:textColor="#757575"
+        android:textColor="?android:attr/textColorSecondary"
         android:layout_marginTop="16dp" />
 
     <TextView
@@ -106,7 +107,7 @@
         android:layout_height="wrap_content"
         android:text="Precio PVPC"
         android:textSize="17sp"
-        android:textColor="#000000" />
+        android:textColor="?android:attr/textColorPrimary" />
 
     <View
         android:layout_width="match_parent"
@@ -121,7 +122,7 @@
         android:layout_height="wrap_content"
         android:text="Potencia de instalación"
         android:textSize="12sp"
-        android:textColor="#757575"
+        android:textColor="?android:attr/textColorSecondary"
         android:layout_marginTop="16dp" />
 
     <TextView
@@ -130,7 +131,7 @@
         android:layout_height="wrap_content"
         android:text="5kWp"
         android:textSize="17sp"
-        android:textColor="#000000" />
+        android:textColor="?android:attr/textColorPrimary" />
 
     <View
         android:layout_width="match_parent"

@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_gravity="center"
-    android:background="@android:color/white"
+    android:background="?android:attr/colorBackground"
     android:padding="16dp">
 
     <TextView
@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:text="Estado solicitud autoconsumo"
         android:textSize="18sp"
-        android:textColor="#000000"
+        android:textColor="?android:attr/textColorPrimary"
         android:textStyle="bold"
         android:gravity="center"
         android:layout_marginBottom="16dp"/>
@@ -23,7 +23,7 @@
         android:layout_height="125dp"
         android:text="El tiempo estimado de activación de tu autoconsumo es de 1 a 2 meses, éste variará en función de tu comunidad autónoma y distribuidora"
         android:textSize="17sp"
-        android:textColor="#333333"
+        android:textColor="?android:attr/textColorPrimary"
         android:gravity="center"
         android:layout_marginBottom="24dp"/>
 
@@ -38,6 +38,5 @@
         android:gravity="center"
         android:background="@drawable/boton_verde"
         android:padding="12dp" />
-
 
 </LinearLayout>

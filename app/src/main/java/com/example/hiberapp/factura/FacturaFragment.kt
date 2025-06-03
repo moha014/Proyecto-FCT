@@ -69,16 +69,17 @@ class FacturaFragment : Fragment() {
         // Configuramos el RecyclerView para mostrar la lista de facturas
         binding.recyclerFacturas.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerFacturas.adapter = FacturaAdapter(facturasFiltradas) {
-            // Cuando se toca una factura, mostramos un popup con información
-            val popupView = LayoutInflater.from(requireContext())
-                .inflate(R.layout.informacion_estado2, null)
-            val dialog = AlertDialog.Builder(requireContext())
-                .setView(popupView)
-                .create()
-            // Botón para cerrar el popup
-            popupView.findViewById<View>(R.id.btnCerrar)?.setOnClickListener {
+            // Cuando se toca una factura, mostramos un popup igual al de DetallesFragment
+            val dialog = android.app.Dialog(requireContext())
+            dialog.requestWindowFeature(android.view.Window.FEATURE_NO_TITLE)
+            dialog.setContentView(R.layout.informacion_estado)
+            dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+            val btnAceptar = dialog.findViewById<android.widget.Button>(R.id.btn_aceptar)
+            btnAceptar?.setOnClickListener {
                 dialog.dismiss()
             }
+
             dialog.show()
         }
 
@@ -336,10 +337,11 @@ class FacturaFragment : Fragment() {
             }
             chart.xAxis.granularity = 1f
             chart.xAxis.labelRotationAngle = -30f
-            chart.xAxis.textColor = Color.DKGRAY
-            chart.axisLeft.textColor = Color.DKGRAY
+            chart.xAxis.textColor = Color.WHITE
+            chart.axisLeft.textColor = Color.WHITE
             chart.axisRight.isEnabled = false
             chart.legend.isEnabled = true
+            chart.legend.textColor = Color.WHITE
             chart.description.isEnabled = false
             chart.invalidate() // Redibujamos el gráfico
         } else {
@@ -364,6 +366,7 @@ class FacturaFragment : Fragment() {
                 dataSet.fillColor = Color.parseColor("#8BC34A")
                 dataSet.fillAlpha = 60
                 dataSet.valueTextSize = 12f
+                dataSet.valueTextColor = Color.WHITE
                 chart.data = LineData(dataSet)
                 chart.axisLeft.axisMinimum = 0f
             } else {
@@ -378,10 +381,11 @@ class FacturaFragment : Fragment() {
             }
             chart.xAxis.granularity = 1f
             chart.xAxis.labelRotationAngle = -30f
-            chart.xAxis.textColor = Color.DKGRAY
-            chart.axisLeft.textColor = Color.DKGRAY
+            chart.xAxis.textColor = Color.WHITE
+            chart.axisLeft.textColor = Color.WHITE
             chart.axisRight.isEnabled = false
             chart.legend.isEnabled = true
+            chart.legend.textColor = Color.WHITE
             chart.description.isEnabled = false
             chart.invalidate()
         }

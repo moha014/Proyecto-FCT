@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="?android:attr/colorBackground"
     android:paddingTop="20dp">
 
     <Toolbar
@@ -11,13 +11,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:background="#FFFFFF"
-        android:theme="@style/ThemeOverlay.AppCompat.Light"
+        android:background="@android:color/black"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark"
         app:contentInsetStartWithNavigation="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:titleTextColor="@color/black">
+        app:titleTextColor="?android:attr/textColorPrimary">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -55,7 +55,8 @@
                 android:layout_marginEnd="25dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:src="@drawable/filtericon_3x" />
+                android:src="@drawable/filtericon_3x"
+                app:tint="@android:color/white" />
         </RelativeLayout>
     </Toolbar>
 
@@ -66,7 +67,7 @@
         android:layout_margin="15dp"
         android:paddingBottom="20dp"
         android:text="Facturas"
-        android:textColor="@color/black"
+        android:textColor="?android:attr/textColorPrimary"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -89,7 +90,7 @@
             android:layout_height="wrap_content"
             android:text="€"
             android:textSize="18sp"
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:layout_marginEnd="8dp"/>
 
         <Switch
@@ -104,7 +105,7 @@
             android:layout_height="wrap_content"
             android:text="kWh"
             android:textSize="18sp"
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:layout_marginStart="8dp"/>
     </LinearLayout>
 

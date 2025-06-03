@@ -84,7 +84,7 @@ class FiltrarFacturasFragment : Fragment() {
             // Creamos un DatePickerDialog con tema verde personalizado
             val datePickerDialog = DatePickerDialog(
                 requireContext(),
-                R.style.GreenDatePickerTheme,
+                R.style.CustomDatePickerDialog,
                 { _, year, month, day ->
                     // Cuando el usuario selecciona una fecha, la ponemos en el EditText
                     calendar.set(year, month, day)
