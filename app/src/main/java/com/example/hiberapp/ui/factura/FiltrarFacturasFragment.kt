@@ -15,7 +15,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 // Fragment para configurar los filtros de las facturas
-class FiltrarFacturasFragment : Fragment() {
+class FiltrarFacturasFragment(private val maxImporte: Float = 70f) : Fragment() {
 
     // Variables para acceder a los elementos de la interfaz
     private lateinit var etFechaInicio: EditText
@@ -105,15 +105,23 @@ class FiltrarFacturasFragment : Fragment() {
 
     // Configura el slider para seleccionar rango de precios
     private fun setupRangeSlider() {
-        // Establecemos los valores inicial y final del slider (1€ a 70€)
-        rangeSlider.setValues(1f, 70f)
+        // Establecemos los valores inicial y final del slider (1€ a maxImporte)
+        rangeSlider.valueFrom = 1f
+        rangeSlider.valueTo = maxImporte
+        rangeSlider.setValues(1f, maxImporte)
         rangeSlider.stepSize = 1f // Se mueve de 1 en 1
 
         // Mostramos los valores iniciales en los textos
         tvMinSeleccionado.text = getString(R.string._1)
-        tvMaxSeleccionado.text = getString(R.string._70)
+        tvMaxSeleccionado.text = String.format("%.0f €", maxImporte)
 
-        // Cuando el usuario mueve el slider, actualizamos los textos
+        // Los TextView de arriba muestran siempre el mínimo y el máximo
+        val tvMinImporte = requireView().findViewById<TextView>(R.id.tvMinImporte)
+        val tvMaxImporte = requireView().findViewById<TextView>(R.id.tvMaxImporte)
+        tvMinImporte.text = getString(R.string._1)
+        tvMaxImporte.text = String.format("%.0f €", maxImporte)
+
+        // Cuando el usuario mueve el slider, solo los textos de abajo cambian
         rangeSlider.addOnChangeListener { slider, _, _ ->
             val valores = slider.values
             val minValor = valores[0].toInt()
@@ -168,7 +176,7 @@ class FiltrarFacturasFragment : Fragment() {
     private fun limpiarFiltros() {
         etFechaInicio.setText("") // Limpiamos fecha inicio
         etFechaFinal.setText("") // Limpiamos fecha fin
-        rangeSlider.setValues(1f, 70f) // Volvemos el slider a los valores iniciales
+        rangeSlider.setValues(1f, maxImporte) // Volvemos el slider a los valores iniciales
 
         // Desmarcamos todos los checkboxes
         cbPagado.isChecked = false

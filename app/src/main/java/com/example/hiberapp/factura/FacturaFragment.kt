@@ -116,7 +116,9 @@ class FacturaFragment : Fragment() {
         }
         // Botón para abrir los filtros
         binding.ivFilter.setOnClickListener {
-            val filtrarFragment = FiltrarFacturasFragment.newInstance()
+            val maxImporte = todasLasFacturas.maxOfOrNull { it.importeOrdenacion.toFloatOrNull() ?: 70f } ?: 70f
+            val maxImporteRedondeado = kotlin.math.ceil(maxImporte).toInt().toFloat()
+            val filtrarFragment = com.example.hiberapp.ui.factura.FiltrarFacturasFragment(maxImporteRedondeado)
             requireActivity().supportFragmentManager.beginTransaction()
                 .replace(android.R.id.content, filtrarFragment)
                 .addToBackStack(null)
