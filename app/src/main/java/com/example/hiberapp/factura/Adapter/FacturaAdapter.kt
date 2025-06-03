@@ -40,7 +40,14 @@ class FacturaAdapter(
         fun bind(factura: Factura, onItemClick: () -> Unit) {
 
             // Ponemos la fecha de la factura en el TextView correspondiente
-            binding.tvFecha.text = factura.fecha
+            binding.tvFecha.text = try {
+                val formatoEntrada = java.text.SimpleDateFormat("dd/MM/yyyy", java.util.Locale.getDefault())
+                val formatoSalida = java.text.SimpleDateFormat("dd MMM yyyy", java.util.Locale.getDefault())
+                val date = formatoEntrada.parse(factura.fecha)
+                date?.let { formatoSalida.format(it) } ?: factura.fecha
+            } catch (e: Exception) {
+                factura.fecha
+            }
             // Ponemos el estado de la factura
             binding.tvEstado.text = factura.descEstado
 
